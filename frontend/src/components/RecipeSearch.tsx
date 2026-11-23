@@ -1,26 +1,34 @@
 import { useState } from "react";
-import type { RecipeSummary } from "../types/recipe";
+import type { Gericht } from "../types/recipe";
 
-const testRecipes: RecipeSummary[] = [
+const testRecipes: Gericht[] = [
     {
-        externalId: "52771",
-        title: "Spicy Arrabiata Penne",
-        category: "Vegetarian",
-        area: "Italian",
-        imageUrl: "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+        id: "52771",
+        name: "Spicy Arrabiata Penne",
+        kategorie: "VEGETARIAN",
+        kueche: "Italian",
+        region: "Italian",
+        anweisungen: "",
+        thumbnail: "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+        zutaten: [],
+        istFavorit: false,
     },
     {
-        externalId: "52772",
-        title: "Teriyaki Chicken Casserole",
-        category: "Chicken",
-        area: "Japanese",
-        imageUrl: "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
+        id: "52772",
+        name: "Teriyaki Chicken Casserole",
+        kategorie: "CHICKEN",
+        kueche: "Japanese",
+        region: "Japanese",
+        anweisungen: "",
+        thumbnail: "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
+        zutaten: [],
+        istFavorit: false,
     },
 ];
 
 function RecipeSearch() {
     const [searchTerm, setSearchTerm] = useState("");
-    const [recipes, setRecipes] = useState<RecipeSummary[]>([]);
+    const [recipes, setRecipes] = useState<Gericht[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -28,7 +36,7 @@ function RecipeSearch() {
         setErrorMessage("");
 
         const result = testRecipes.filter((recipe) =>
-            recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+            recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
         setRecipes(result);
@@ -56,15 +64,16 @@ function RecipeSearch() {
 
             <div>
                 {recipes.map((recipe) => (
-                    <div key={recipe.externalId}>
-                        <img src={recipe.imageUrl} alt={recipe.title} width="200" />
-                        <h3>{recipe.title}</h3>
-                        <p>Kategorie: {recipe.category}</p>
-                        <p>Region: {recipe.area}</p>
+                    <div key={recipe.id}>
+                        <img src={recipe.thumbnail} alt={recipe.name} width="200" />
+                        <h3>{recipe.name}</h3>
+                        <p>Kategorie: {recipe.kategorie}</p>
+                        <p>Region: {recipe.region}</p>
                     </div>
                 ))}
             </div>
         </div>
     );
 }
+
 export default RecipeSearch;
