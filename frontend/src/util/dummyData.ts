@@ -7,7 +7,7 @@ interface Zutat {
     menge: string
 }
 
-interface Rezept {
+export interface Rezept {
     id: string,
     name: string,
     kategorie: Kategorie,
