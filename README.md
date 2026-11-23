@@ -170,7 +170,7 @@ US2:
 - 404 Not Found, wenn kein Gericht mit der angegebenen {id} gefunden wurde.
 - 
 -	Request-Body (Beispiel):
-JSON
+```JSON
 {
   "istFavorit": true
 }
