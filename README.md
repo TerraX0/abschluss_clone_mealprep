@@ -72,7 +72,7 @@ US1:
      mit id, rezept_id, name, menge und istFavorit). 
 
 Beispiel:
-JSON
+```JSON
 [
   {
     "id": "52771",
