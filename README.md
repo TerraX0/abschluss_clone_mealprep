@@ -142,6 +142,7 @@ Dynamisch aus dem Backend: Das Frontend ruft beim Laden GET /api/mealprep/catego
 
 Beispiel:
 
+```JSON
 [
     {
     "id": "1",
