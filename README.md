@@ -113,7 +113,7 @@ Query-Parameter (beide optional):
 -	Format: Ein einzelnes JSON-Objekt (Gericht) inklusive aller ihm zugehörigen Zutaten. 
 
 Beispiel:
-JSON
+```JSON
 {
   "id": "52771",
   "name": "Spicy Arrabiata Penne",
