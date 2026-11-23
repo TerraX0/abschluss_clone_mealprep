@@ -1,6 +1,4 @@
 export interface Zutat {
-    id: string;
-    rezept_id: string;
     name: string;
     menge: string;
 }
