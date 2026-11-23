@@ -99,6 +99,7 @@ Beispiel:
     "istFavorit": false
   }
 ]
+```
 
 Query-Parameter (beide optional): 
 
@@ -132,6 +133,7 @@ Beispiel:
   ],
   "istFavorit": false
 }
+```
 
 3. GET /api/mealprep/categories
 Für das Dropdown "Kategorien".
@@ -160,6 +162,7 @@ Beispiel:
     "beschreibung": "Sonstige / nicht zugeordnete Kategorien"
 }
 ]
+```
 
 US2:
 
@@ -174,6 +177,7 @@ US2:
 {
   "istFavorit": true
 }
+```
 
 Response-Format: Ein einzelnes JSON-Objekt (Gericht) mit dem aktualisierten istFavorit-Wert (true oder false) 
 inklusive aller zugehörigen zutaten.
@@ -197,7 +201,7 @@ inklusive aller zugehörigen zutaten.
   ],
   "istFavorit": true
 }
-
+```
 
 2. GET /api/mealprep/favorites
 
@@ -225,5 +229,5 @@ inklusive aller zugehörigen zutaten.
     "istFavorit": true
   }
 ]
-
+```
 
