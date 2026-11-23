@@ -204,7 +204,7 @@ inklusive aller zugehörigen zutaten.
 - HTTP-Status: 200 OK (auch wenn noch keine Favoriten vorhanden sind – dann als leeres JSON-Array []).
 - Format: JSON-Array mit allen Gerichten, bei denen istFavorit auf true steht (jeweils inklusive zutaten als Array).
 
-JSON
+```JSON
 [
   {
     "id": "52771",
