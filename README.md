@@ -178,7 +178,7 @@ JSON
 Response-Format: Ein einzelnes JSON-Objekt (Gericht) mit dem aktualisierten istFavorit-Wert (true oder false) 
 inklusive aller zugehörigen zutaten.
 
-JSON
+```JSON
 {
   "id": "52771",
   "name": "Spicy Arrabiata Penne",
