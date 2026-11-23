@@ -1,0 +1,22 @@
+
+### Test 1: Rezepte nach Namen suchen
+GET http://localhost:8080/api/mealprep/search?suche=chicken
+Accept: application/json
+
+###
+
+### Test 2: Weitere Rezepte suchen
+GET http://localhost:8080/api/mealprep/search?suche=pasta
+Accept: application/json
+
+###
+
+### Test 3: Keine Suchergebnisse
+GET http://localhost:8080/api/mealprep/search?suche=xyz123unbekannt
+Accept: application/json
+
+###
+
+### Test 4: Fehlender Suchparameter
+GET http://localhost:8080/api/mealprep/search
+Accept: application/json
