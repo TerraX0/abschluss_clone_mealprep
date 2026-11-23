@@ -21,10 +21,18 @@ const testRecipes: RecipeSummary[] = [
 function RecipeSearch() {
     const [searchTerm, setSearchTerm] = useState("");
     const [recipes, setRecipes] = useState<RecipeSummary[]>([]);
+    const [hasSearched, setHasSearched] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     function handleSearch() {
-        console.log("Suche nach:", searchTerm);
-        setRecipes(testRecipes);
+        setErrorMessage("");
+
+        const result = testRecipes.filter((recipe) =>
+            recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setRecipes(result);
+        setHasSearched(true);
     }
 
     return (
@@ -40,6 +48,12 @@ function RecipeSearch() {
 
             <button onClick={handleSearch}>Suchen</button>
 
+            {errorMessage !== "" && <p style={{ color: "red" }}>{errorMessage}</p>}
+
+            {hasSearched && errorMessage === "" && recipes.length === 0 && (
+                <p>Keine Rezepte gefunden. Versuche einen anderen Suchbegriff.</p>
+            )}
+
             <div>
                 {recipes.map((recipe) => (
                     <div key={recipe.externalId}>
@@ -53,5 +67,4 @@ function RecipeSearch() {
         </div>
     );
 }
-
 export default RecipeSearch;
