@@ -1,6 +1,6 @@
 package org.backend.controller;
 
-import org.backend.service.ExterneRezeptService;
+import org.backend.service.ExterneRezepteService;
 import org.backend.dto.ExternesRezeptDto;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -13,10 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/mealprep")
 public class ExterneRezeptController {
-    private final ExterneRezeptService externeRezeptService;
+    private final ExterneRezepteService externeRezepteService;
 
-    public ExterneRezeptController(ExterneRezeptService externeRezeptService) {
-        this.externeRezeptService = externeRezeptService;
+    public ExterneRezeptController(ExterneRezepteService externeRezepteService) {
+        this.externeRezepteService = externeRezepteService;
     }
 
 
@@ -24,6 +24,6 @@ public class ExterneRezeptController {
     public List<ExternesRezeptDto> sucheRezepte(
             @RequestParam("suche") String suchbegriff
     ) {
-        return externeRezeptService.sucheRezepte(suchbegriff);
+        return externeRezepteService.sucheRezepte(suchbegriff);
     }
 }

@@ -14,11 +14,11 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 @Service
-public class ExterneRezeptService {
+public class ExterneRezepteService {
     private final RestClient restClient;
     private final RezeptMapper rezeptMapper;
 
-    public ExterneRezeptService(RestClient restClient, RezeptMapper rezeptMapper) {
+    public ExterneRezepteService(RestClient restClient, RezeptMapper rezeptMapper) {
         this.restClient = restClient;
         this.rezeptMapper = rezeptMapper;
     }

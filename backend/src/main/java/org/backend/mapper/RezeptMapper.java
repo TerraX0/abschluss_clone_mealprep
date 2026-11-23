@@ -55,10 +55,10 @@ public class RezeptMapper {
         );
     }
 
-    public List<ExternesRezeptDto> wandleSuchergebnisseUm(JsonNode antwort) {
+    public List<ExternesRezeptDto> wandleSuchergebnisseUm(JsonNode suchergebnisse) {
 
         List<ExternesRezeptDto> rezepte = new ArrayList<>();
-        JsonNode gerichte = antwort.path("meals");
+        JsonNode gerichte = suchergebnisse.path("meals");
 
         if (gerichte.isArray()) {
             for (JsonNode gericht : gerichte) {
