@@ -6,6 +6,8 @@ import org.backend.repository.RezeptRepository;
 import org.backend.dto.ZutatDto;
 import org.backend.entity.RezeptZutat;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +21,10 @@ public class RezeptService {
     public Rezept speicherRezept(Rezept rezept) {
       if(rezept.getExterneId() != null && rezeptRepository.existsByExterneId(rezept.getExterneId())) {
 
-          throw new IllegalArgumentException("Dieses Rezept existiert bereits!");
-      }
+          throw new ResponseStatusException(
+                  HttpStatus.CONFLICT,
+                  "Dieses Rezept existiert bereits!"
+          );      }
       return rezeptRepository.save(rezept);
     }
 
