@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rezepte")
@@ -28,5 +31,10 @@ public class RezeptController {
             @RequestBody ExternesRezeptDto externesRezeptDto
     ) {
         return rezeptService.speichereExternesRezept(externesRezeptDto);
+    }
+
+    @GetMapping
+    public List<GespeichertesRezeptDto> holeAlleRezepte() {
+        return rezeptService.holeAlleRezepte();
     }
 }

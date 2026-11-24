@@ -39,8 +39,12 @@ public class RezeptService {
         return rezeptRepository.save(rezept);
     }
 
-    public List<Rezept> holeAlleRezepte() {
-        return rezeptRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<GespeichertesRezeptDto> holeAlleRezepte() {
+        return rezeptRepository.findAll()
+                .stream()
+                .map(rezeptMapper::wandleEntityInDtoUm)
+                .toList();
     }
 
     public Rezept wandleDtoInRezeptUm(ExternesRezeptDto externesRezeptDto) {

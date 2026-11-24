@@ -81,3 +81,7 @@ Content-Type: application/json
   ],
   "istFavorit": false
 }
+
+### Alle gespeicherten Rezepte abrufen
+GET http://localhost:8080/api/rezepte
+Accept: application/json
