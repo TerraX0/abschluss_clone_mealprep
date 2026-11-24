@@ -1,11 +1,14 @@
 import { useState } from "react";
 import type { Gericht } from "../types/recipe";
+const testKategorien: string[] = ["RIND", "MEERESFRUECHTE", "VEGETARISCH"];
 
 function RecipeSearch() {
     const [searchTerm, setSearchTerm] = useState("");
     const [recipes, setRecipes] = useState<Gericht[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [kategorien, setKategorien] = useState<string[]>(testKategorien);
+    const [selectedKategorie, setSelectedKategorie] = useState("");
 
     async function handleSearch() {
         setErrorMessage("");
@@ -38,6 +41,17 @@ function RecipeSearch() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <select
+                value={selectedKategorie}
+                onChange={(e) => setSelectedKategorie(e.target.value)}
+            >
+                <option value="">Alle Kategorien</option>
+                {kategorien.map((kategorie) => (
+                    <option key={kategorie} value={kategorie}>
+                        {kategorie}
+                    </option>
+                ))}
+            </select>
 
             <button onClick={handleSearch}>Suchen</button>
 
