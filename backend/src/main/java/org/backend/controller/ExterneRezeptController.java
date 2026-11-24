@@ -2,11 +2,9 @@ package org.backend.controller;
 
 import org.backend.service.ExterneRezepteService;
 import org.backend.dto.ExternesRezeptDto;
-
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,10 @@ public class ExterneRezeptController {
             @RequestParam("suche") String suchbegriff
     ) {
         return externeRezepteService.sucheRezepte(suchbegriff);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ExternesRezeptDto> holeEinzelnesExternesRezept(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(externeRezepteService.holeEinzelnesExternesRezept(id));
     }
 }
