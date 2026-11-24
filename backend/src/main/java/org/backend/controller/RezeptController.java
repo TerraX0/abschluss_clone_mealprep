@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import org.backend.dto.GespeichertesRezeptDto;
+
 @RestController
 @RequestMapping("/api/rezepte")
 public class RezeptController {
@@ -22,9 +24,14 @@ public class RezeptController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Rezept speichereRezept(@RequestBody ExternesRezeptDto externesRezeptDto) {
+    public GespeichertesRezeptDto speichereRezept(@RequestBody ExternesRezeptDto externesRezeptDto) {
         Rezept rezept = rezeptService.wandleDtoInRezeptUm(externesRezeptDto);
 
-        return rezeptService.speicherRezept(rezept);
-    }
+        Rezept gespeichertesRezept = rezeptService.speicherRezept(rezept);
+
+        return new GespeichertesRezeptDto(
+                gespeichertesRezept.getId(),
+                gespeichertesRezept.getName(),
+                gespeichertesRezept.getExterneId()
+        );    }
 }
