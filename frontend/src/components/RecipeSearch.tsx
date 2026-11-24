@@ -1,14 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Gericht } from "../types/recipe";
-const testKategorien: string[] = ["RIND", "MEERESFRUECHTE", "VEGETARISCH"];
 
 function RecipeSearch() {
     const [searchTerm, setSearchTerm] = useState("");
     const [recipes, setRecipes] = useState<Gericht[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [kategorien, setKategorien] = useState<string[]>(testKategorien);
+    const [kategorien, setKategorien] = useState<string[]>([]);
     const [selectedKategorie, setSelectedKategorie] = useState("");
+
+    useEffect(() => {
+        async function loadKategorien() {
+            try {
+                const response = await fetch("/api/mealprep/kategorien");
+                if (response.ok) {
+                    const data = await response.json();
+                    setKategorien(data);
+                }
+            } catch {
+                console.log("Kategorien konnten nicht geladen werden");
+            }
+        }
+
+        loadKategorien();
+    }, []);
 
     async function handleSearch() {
         setErrorMessage("");
