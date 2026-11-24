@@ -1,12 +1,12 @@
-import RecipeSearch from "./components/RecipeSearch";
+import RecipeSearch from "./components/RecipeSearch.tsx";
 
 function App() {
     return (
         <>
-            <h1>Meal Prep</h1>
-            <RecipeSearch />
+            <h1>Mealprep</h1>
+            <RecipeSearch/>
         </>
-    );
+    )
 }
 
-export default App;
+export default App

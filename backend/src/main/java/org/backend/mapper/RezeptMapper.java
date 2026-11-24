@@ -70,38 +70,4 @@ public class RezeptMapper {
         }
         return rezepte;
     }
-
-    public List<ExternesRezeptDto> wandleKategorieErgebnisseUm(
-            JsonNode gewaehlteKategorie,
-            Kategorie kategorie
-    ) {
-        List<ExternesRezeptDto> rezepte = new ArrayList<>();
-
-        JsonNode gerichte = gewaehlteKategorie.path("meals");
-
-        if (gerichte.isArray()) {
-            for (JsonNode gericht : gerichte) {
-
-                String id = gericht.path("idMeal").asString("");
-                String name = gericht.path("strMeal").asString("");
-                String thumbnail = gericht.path("strMealThumb").asString("");
-
-                ExternesRezeptDto rezept = new ExternesRezeptDto(
-                        id,
-                        name,
-                        kategorie,
-                        "",
-                        "",
-                        "",
-                        thumbnail,
-                        List.of(),
-                        false
-                );
-
-                rezepte.add(rezept);
-            }
-        }
-
-        return rezepte;
-    }
 }
