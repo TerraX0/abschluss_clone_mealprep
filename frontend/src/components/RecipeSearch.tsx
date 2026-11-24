@@ -28,15 +28,30 @@ function RecipeSearch() {
     async function handleSearch() {
         setErrorMessage("");
 
+        let url = "";
+        if (selectedKategorie !== "") {
+            url = "/api/mealprep/kategorie?kategorie=" + selectedKategorie;
+        } else {
+            url = "/api/mealprep/search?suche=" + searchTerm;
+        }
+
         try {
-            const response = await fetch("/api/mealprep/search?suche=" + searchTerm);
+            const response = await fetch(url);
 
             if (!response.ok) {
                 setErrorMessage("Die Rezeptsuche ist gerade nicht erreichbar. Bitte versuche es später erneut.");
                 setRecipes([]);
             } else {
-                const data = await response.json();
-                setRecipes(data);
+                const data: Gericht[] = await response.json();
+
+                if (selectedKategorie !== "" && searchTerm !== "") {
+                    const gefiltert = data.filter((recipe) =>
+                        recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+                    setRecipes(gefiltert);
+                } else {
+                    setRecipes(data);
+                }
             }
         } catch {
             setErrorMessage("Keine Verbindung zum Server. Bitte versuche es später erneut.");
@@ -82,7 +97,7 @@ function RecipeSearch() {
                         <img src={recipe.thumbnail} alt={recipe.name} width="200" />
                         <h3>{recipe.name}</h3>
                         <p>Kategorie: {recipe.kategorie}</p>
-                        <p>Region: {recipe.region}</p>
+                        {recipe.region && <p>Region: {recipe.region}</p>}
                     </div>
                 ))}
             </div>
