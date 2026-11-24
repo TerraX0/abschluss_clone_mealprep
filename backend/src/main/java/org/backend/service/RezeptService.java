@@ -8,6 +8,7 @@ import org.backend.entity.Rezept;
 import org.backend.entity.RezeptZutat;
 import org.backend.mapper.RezeptMapper;
 import org.backend.repository.RezeptRepository;
+import org.backend.dto.EigenesRezeptErstellenDto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,34 @@ public class RezeptService {
     ) {
         Rezept rezept = wandleDtoInRezeptUm(externesRezeptDto);
         Rezept gespeichertesRezept = speicherRezept(rezept);
+
+        return rezeptMapper.wandleEntityInDtoUm(gespeichertesRezept);
+    }
+
+    @Transactional
+    public GespeichertesRezeptDto erstelleEigenesRezept(
+            EigenesRezeptErstellenDto dto
+    ) {
+        Rezept rezept = new Rezept(
+                null,
+                dto.name(),
+                dto.kategorie(),
+                "",
+                "",
+                dto.anweisungen(),
+                ""
+        );
+
+        for (ZutatDto zutatDto : dto.zutaten()) {
+            RezeptZutat rezeptZutat = new RezeptZutat(
+                    zutatDto.name(),
+                    zutatDto.menge()
+            );
+
+            rezept.fuegeZutatHinzu(rezeptZutat);
+        }
+
+        Rezept gespeichertesRezept = rezeptRepository.save(rezept);
 
         return rezeptMapper.wandleEntityInDtoUm(gespeichertesRezept);
     }

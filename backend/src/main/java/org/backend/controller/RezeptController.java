@@ -4,6 +4,9 @@ package org.backend.controller;
 import org.backend.service.RezeptService;
 import org.backend.dto.ExternesRezeptDto;
 import org.backend.dto.GespeichertesRezeptDto;
+import org.backend.dto.EigenesRezeptErstellenDto;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +39,11 @@ public class RezeptController {
     @GetMapping
     public List<GespeichertesRezeptDto> holeAlleRezepte() {
         return rezeptService.holeAlleRezepte();
+    }
+
+    @PostMapping("/eigene")
+    @ResponseStatus(HttpStatus.CREATED)
+    public GespeichertesRezeptDto erstelleEigenesRezept(@Valid @RequestBody EigenesRezeptErstellenDto eigenesRezeptErstellenDto) {
+        return rezeptService.erstelleEigenesRezept(eigenesRezeptErstellenDto);
     }
 }

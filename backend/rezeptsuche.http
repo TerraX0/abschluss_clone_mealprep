@@ -85,3 +85,50 @@ Content-Type: application/json
 ### Alle gespeicherten Rezepte abrufen
 GET http://localhost:8080/api/rezepte
 Accept: application/json
+
+### Eigenes Rezept erstellen
+POST http://localhost:8080/api/rezepte/eigene
+Content-Type: application/json
+
+{
+  "name": "Meine Kartoffelsuppe",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln kochen und anschließend pürieren.",
+  "zutaten": [
+    {
+      "name": "Kartoffeln",
+      "menge": "500 g"
+    },
+    {
+      "name": "Milch",
+      "menge": "200 ml"
+    }
+  ]
+}
+
+### Eigenes Rezept ohne Namen
+POST http://localhost:8080/api/rezepte/eigene
+Content-Type: application/json
+
+{
+  "name": "",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln kochen.",
+  "zutaten": [
+    {
+      "name": "Kartoffeln",
+      "menge": "500 g"
+    }
+  ]
+}
+
+### Eigenes Rezept ohne Zutaten
+POST http://localhost:8080/api/rezepte/eigene
+Content-Type: application/json
+
+{
+  "name": "Kartoffelsuppe",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln kochen.",
+  "zutaten": []
+}
