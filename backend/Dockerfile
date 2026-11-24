@@ -1,20 +1,17 @@
 # Stage 1: Build mit Maven
-FROM eclipse-temurin:21-jdk AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-
 COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
-
 COPY src ./src
-RUN ./mvnw package -DskipTests -B && ls -la /app/target
+RUN mvn clean package -DskipTests -B
 
-# Stage 2: Schlankes Runtime-Image
-FROM eclipse-temurin:21-jre
+# Stage 2: Schlanke Runtime
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
+
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
 
 COPY --from=build /app/target/*.jar app.jar
-
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
