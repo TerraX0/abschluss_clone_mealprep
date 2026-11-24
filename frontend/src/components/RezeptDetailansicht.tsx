@@ -1,20 +1,46 @@
-import {type Rezept} from "./util/dummyData.ts";
 import {Link, useParams} from "react-router";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import type {ApiError, Gericht} from "../types/recipe.ts";
 
 export default function RezeptDetailansicht() {
     const {id} = useParams<{ id: string }>();
-    const [entry, setEntry] = useState<Rezept | null>(null);
+    const [entry, setEntry] = useState<Gericht | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<undefined | null | string>(null);
 
     async function fetchEntry() {
-        const response = await axios.get<Rezept>(`/api/mealprep/${id}`);
-        setEntry(response.data)
+        try {
+            setIsLoading(true)
+            const response = await axios.get<Gericht>(`/api/mealprep/${id}`);
+            setEntry(response.data)
+            setError(null);
+        } catch (error) {
+            if (axios.isAxiosError<ApiError>(error)) {
+                console.error(error.response?.data.message);
+                setError(error.response?.data.message)
+            }
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(() => {
         fetchEntry();
     }, [id]);
+
+    if (isLoading) {
+        return <p>Rezept wird geladen</p>;
+    }
+
+    if (error) {
+        return (
+            <>
+                <p>Fehler beim Laden des Eintrags: {error}</p>
+                <Link to="/">← Zurück zur Übersicht</Link>
+            </>
+        )
+    }
 
     if (!entry) {
         return (

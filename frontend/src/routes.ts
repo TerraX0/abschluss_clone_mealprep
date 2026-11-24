@@ -1,6 +1,6 @@
 import {createBrowserRouter} from "react-router";
 import App from "./App.tsx";
-import RezeptDetailansicht from "./RezeptDetailansicht.tsx";
+import RezeptDetailansicht from "./components/RezeptDetailansicht.tsx";
 
 export const router = createBrowserRouter([
     {
