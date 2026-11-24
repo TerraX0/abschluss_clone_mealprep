@@ -20,18 +20,3 @@ Accept: application/json
 ### Test 4: Fehlender Suchparameter
 GET http://localhost:8080/api/mealprep/search
 Accept: application/json
-
-
-### Alle verfügbaren Kategorien abrufen
-GET http://localhost:8080/api/mealprep/kategorien
-Accept: application/json
-
-### Hähnchenrezepte abrufen
-GET http://localhost:8080/api/mealprep/kategorie?kategorie=HAEHNCHEN
-Accept: application/json
-
-###
-
-### Vegetarische Rezepte abrufen
-GET http://localhost:8080/api/mealprep/kategorie?kategorie=VEGETARISCH
-Accept: application/json
