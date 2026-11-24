@@ -8,7 +8,7 @@ export default function RezeptDetailansicht() {
     const [entry, setEntry] = useState<Rezept | null>(null);
 
     async function fetchEntry() {
-        const response = await axios.get<Rezept>(`http://localhost:8080/api/mealprep/${id}`);
+        const response = await axios.get<Rezept>(`/api/mealprep/${id}`);
         setEntry(response.data)
     }
 
