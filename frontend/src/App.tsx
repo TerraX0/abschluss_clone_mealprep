@@ -1,10 +1,12 @@
-function App() {
+import RecipeSearch from "./components/RecipeSearch";
 
+function App() {
     return (
         <>
-            <h1>Mealprep</h1>
+            <h1>Meal Prep</h1>
+            <RecipeSearch />
         </>
-    )
+    );
 }
 
-export default App
+export default App;
