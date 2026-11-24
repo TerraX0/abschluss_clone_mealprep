@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import type { Gericht } from "../types/recipe";
+import {useEffect, useState} from "react";
+import type {Gericht} from "../types/recipe";
+import {Link} from "react-router";
 
 function RecipeSearch() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -85,7 +86,7 @@ function RecipeSearch() {
 
             <button onClick={handleSearch}>Suchen</button>
 
-            {errorMessage !== "" && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {errorMessage !== "" && <p style={{color: "red"}}>{errorMessage}</p>}
 
             {hasSearched && errorMessage === "" && recipes.length === 0 && (
                 <p>Keine Rezepte gefunden. Versuche einen anderen Suchbegriff.</p>
@@ -93,12 +94,12 @@ function RecipeSearch() {
 
             <div>
                 {recipes.map((recipe) => (
-                    <div key={recipe.id}>
-                        <img src={recipe.thumbnail} alt={recipe.name} width="200" />
+                    <Link to={`/rezepte/${recipe.id}`} key={recipe.id}>
+                        <img src={recipe.thumbnail} alt={recipe.name} width="200"/>
                         <h3>{recipe.name}</h3>
                         <p>Kategorie: {recipe.kategorie}</p>
                         {recipe.region && <p>Region: {recipe.region}</p>}
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
