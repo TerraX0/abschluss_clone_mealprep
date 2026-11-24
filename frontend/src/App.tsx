@@ -1,10 +1,12 @@
-function App() {
+import RecipeSearch from "./components/RecipeSearch.tsx";
 
-  return (
-    <>
-     <h1>Mealprep</h1>
-    </>
-  )
+function App() {
+    return (
+        <>
+            <h1>Mealprep</h1>
+            <RecipeSearch/>
+        </>
+    )
 }
 
 export default App
