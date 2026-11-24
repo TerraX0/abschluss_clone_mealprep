@@ -36,4 +36,23 @@ public enum Kategorie {
             default -> SONSTIGES;
         };
     }
+
+    public String zuApiWert() {
+        return switch (this) {
+            case RINDFLEISCH -> "Beef";
+            case FRUEHSTUECK -> "Breakfast";
+            case HAEHNCHEN -> "Chicken";
+            case NACHSPEISE -> "Dessert";
+            case ZIEGENFLEISCH -> "Goat";
+            case LAMMFLEISCH -> "Lamb";
+            case SONSTIGES -> "Miscellaneous";
+            case PASTA -> "Pasta";
+            case SCHWEINEFLEISCH -> "Pork";
+            case MEERESFRUECHTE -> "Seafood";
+            case BEILAGE -> "Side";
+            case VORSPEISE -> "Starter";
+            case VEGAN -> "Vegan";
+            case VEGETARISCH -> "Vegetarian";
+        };
+    }
 }
