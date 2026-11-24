@@ -107,4 +107,52 @@ public class RezeptService {
 
         return rezeptMapper.wandleEntityInDtoUm(gespeichertesRezept);
     }
+
+    @Transactional
+    public GespeichertesRezeptDto bearbeiteEigenesRezept(
+            Long id,
+            EigenesRezeptErstellenDto dto
+    ) {
+        Rezept rezept = rezeptRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Rezept nicht gefunden!"
+                ));
+
+        if (rezept.getExterneId() != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Externe Rezepte dürfen nicht bearbeitet werden!"
+            );
+        }
+
+        rezept.aktualisiere(
+                dto.name(),
+                dto.kategorie(),
+                dto.anweisungen(),
+                dto.zutaten()
+        );
+
+        rezeptRepository.flush();
+
+        return rezeptMapper.wandleEntityInDtoUm(rezept);
+    }
+
+    @Transactional
+    public void loescheEigenesRezept(Long id) {
+        Rezept rezept = rezeptRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Rezept nicht gefunden!"
+                ));
+
+        if (rezept.getExterneId() != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Externe Rezepte dürfen nicht gelöscht werden!"
+            );
+        }
+
+        rezeptRepository.delete(rezept);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import org.backend.dto.ZutatDto;
 import org.backend.enums.Kategorie;
 
 @Entity
@@ -60,4 +61,30 @@ public class Rezept {
         zutaten.add(rezeptZutat);
         rezeptZutat.setRezept(this);
     }
+
+    public void aktualisiere(
+            String name,
+            Kategorie kategorie,
+            String anweisungen,
+            List<ZutatDto> neueZutaten
+    ) {
+        this.name = name;
+        this.kategorie = kategorie;
+        this.anweisungen = anweisungen;
+
+        for (RezeptZutat zutat : zutaten) {
+            zutat.setRezept(null);
+        }
+
+        zutaten.clear();
+
+        for (ZutatDto zutatDto : neueZutaten) {
+            fuegeZutatHinzu(new RezeptZutat(
+                    zutatDto.name(),
+                    zutatDto.menge()
+            ));
+        }
+    }
+
+
 }

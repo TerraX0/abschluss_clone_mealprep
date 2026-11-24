@@ -132,3 +132,28 @@ Content-Type: application/json
   "anweisungen": "Kartoffeln kochen.",
   "zutaten": []
 }
+
+
+### Eigenes Rezept bearbeiten
+PUT http://localhost:8080/api/rezepte/3
+Content-Type: application/json
+
+{
+  "name": "Meine Kartoffelsuppe verbessert",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln 25 Minuten kochen und anschließend pürieren.",
+  "zutaten": [
+    {
+      "name": "Kartoffeln",
+      "menge": "750 g"
+    },
+    {
+      "name": "Milch",
+      "menge": "250 ml"
+    }
+  ]
+}
+
+### Eigenes Rezept löschen
+DELETE http://localhost:8080/api/rezepte/3
+Accept: application/json

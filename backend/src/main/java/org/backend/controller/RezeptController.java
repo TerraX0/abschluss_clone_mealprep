@@ -16,6 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.List;
 
 @RestController
@@ -45,5 +49,19 @@ public class RezeptController {
     @ResponseStatus(HttpStatus.CREATED)
     public GespeichertesRezeptDto erstelleEigenesRezept(@Valid @RequestBody EigenesRezeptErstellenDto eigenesRezeptErstellenDto) {
         return rezeptService.erstelleEigenesRezept(eigenesRezeptErstellenDto);
+    }
+
+    @PutMapping("/{id}")
+    public GespeichertesRezeptDto bearbeiteEigenesRezept(
+            @PathVariable Long id,
+            @Valid @RequestBody EigenesRezeptErstellenDto dto
+    ) {
+        return rezeptService.bearbeiteEigenesRezept(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void loescheEigenesRezept(@PathVariable Long id) {
+        rezeptService.loescheEigenesRezept(id);
     }
 }
