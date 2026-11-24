@@ -5,6 +5,9 @@ import org.backend.dto.ZutatDto;
 import org.backend.enums.Kategorie;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
+import org.backend.entity.Rezept;
+import org.backend.entity.RezeptZutat;
+import org.backend.dto.GespeichertesRezeptDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,5 +106,28 @@ public class RezeptMapper {
         }
 
         return rezepte;
+    }
+
+    public GespeichertesRezeptDto wandleEntityInDtoUm(Rezept rezept) {
+        List<ZutatDto> zutaten = new ArrayList<>();
+
+        for (RezeptZutat rezeptZutat : rezept.getZutaten()) {
+            zutaten.add(new ZutatDto(
+                    rezeptZutat.getName(),
+                    rezeptZutat.getMenge()
+            ));
+        }
+
+        return new GespeichertesRezeptDto(
+                rezept.getId(),
+                rezept.getExterneId(),
+                rezept.getName(),
+                rezept.getKategorie(),
+                rezept.getKueche(),
+                rezept.getRegion(),
+                rezept.getAnweisungen(),
+                rezept.getThumbnail(),
+                zutaten
+        );
     }
 }

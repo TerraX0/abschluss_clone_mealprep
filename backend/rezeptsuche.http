@@ -56,3 +56,28 @@ Content-Type: application/json
   ],
   "istFavorit": false
 }
+
+### Vollständiges Rezept speichern
+POST http://localhost:8080/api/rezepte
+Content-Type: application/json
+
+{
+  "id": "999001",
+  "name": "Test Chicken Curry",
+  "kategorie": "HAEHNCHEN",
+  "kueche": "Indian",
+  "region": "",
+  "anweisungen": "Cook the chicken and add the rice.",
+  "thumbnail": "",
+  "zutaten": [
+    {
+      "name": "Chicken",
+      "menge": "500 g"
+    },
+    {
+      "name": "Rice",
+      "menge": "200 g"
+    }
+  ],
+  "istFavorit": false
+}
