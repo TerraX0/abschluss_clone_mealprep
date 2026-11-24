@@ -8,6 +8,7 @@ export default function RezeptDetailansicht() {
     const [entry, setEntry] = useState<Gericht | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<undefined | null | string>(null);
+    const [saveMessage, setSaveMessage] = useState("");
 
     async function fetchEntry() {
         try {
@@ -22,6 +23,27 @@ export default function RezeptDetailansicht() {
             }
         } finally {
             setIsLoading(false)
+        }
+    }
+    async function handleSave() {
+        setSaveMessage("");
+
+        try {
+            const response = await fetch("/api/rezepte", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(entry),
+            });
+
+            if (response.ok) {
+                setSaveMessage("✓ Rezept wurde in deiner Sammlung gespeichert.");
+            } else if (response.status === 409) {
+                setSaveMessage("Dieses Rezept ist bereits in deiner Sammlung.");
+            } else {
+                setSaveMessage("Speichern hat nicht geklappt. Bitte versuche es erneut.");
+            }
+        } catch {
+            setSaveMessage("Keine Verbindung zum Server.");
         }
     }
 
@@ -56,6 +78,8 @@ export default function RezeptDetailansicht() {
     return (
         <>
             <h2>{name}</h2>
+            <button onClick={handleSave}>In meiner Sammlung speichern</button>
+            {saveMessage !== "" && <p>{saveMessage}</p>}
             <p>Kategorie: {kategorie} | Küche: {kueche}</p>
             <img src={thumbnail} alt={`Bild von ${name}`} width={300} height={300}/>
             <h3>Anweisungen:</h3>
