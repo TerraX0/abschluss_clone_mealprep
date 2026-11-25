@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 public class Ernaehrungsplaneintrag {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDate datum;
@@ -23,7 +23,7 @@ public class Ernaehrungsplaneintrag {
     private int portionen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "rezept_id")
+    @JoinColumn(name = "rezept_id")
     private Rezept rezept;
 
 
@@ -31,6 +31,18 @@ public class Ernaehrungsplaneintrag {
     }
 
     public Ernaehrungsplaneintrag(LocalDate datum, MahlzeitTyp mahlzeit, int portionen, Rezept rezept) {
+        this.datum = datum;
+        this.mahlzeit = mahlzeit;
+        this.portionen = portionen;
+        this.rezept = rezept;
+    }
+
+    public void aktualisieren(
+            LocalDate datum,
+            MahlzeitTyp mahlzeit,
+            int portionen,
+            Rezept rezept)
+    {
         this.datum = datum;
         this.mahlzeit = mahlzeit;
         this.portionen = portionen;

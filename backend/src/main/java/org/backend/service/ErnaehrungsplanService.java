@@ -76,4 +76,33 @@ public class ErnaehrungsplanService {
 
         ernaehrungsplaneintragRepository.deleteById(id);
     }
+
+    @Transactional
+    public ErnaehrungsplaneintragDto bearbeiteEintrag(
+            Long id,
+            ErnaehrungsplaneintragErstellenDto ernaehrungsplaneintragErstellenDto
+    ){
+        Ernaehrungsplaneintrag eintrag = ernaehrungsplaneintragRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND, "Eintrag nicht gefunden!"
+                        )
+                );
+
+        Rezept rezept = rezeptRepository.findById(ernaehrungsplaneintragErstellenDto.rezeptId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND, "Rezept nicht gefunden!"
+                        )
+                );
+
+                eintrag.aktualisieren(
+                        ernaehrungsplaneintragErstellenDto.datum(),
+                        ernaehrungsplaneintragErstellenDto.mahlzeit(),
+                        ernaehrungsplaneintragErstellenDto.portionen(),
+                        rezept
+                );
+                return wandleInDtoUm(eintrag);
+    }
 }

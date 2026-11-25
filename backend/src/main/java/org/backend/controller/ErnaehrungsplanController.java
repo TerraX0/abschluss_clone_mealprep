@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -53,4 +54,11 @@ public class ErnaehrungsplanController {
         ernaehrungsplanService.loescheEintrag(id);
     }
 
+    @PutMapping("/{id}")
+    public ErnaehrungsplaneintragDto bearbeiteEintrag(
+            @PathVariable Long id,
+            @Valid @RequestBody ErnaehrungsplaneintragErstellenDto erstelleEintragErstellenDto
+    ) {
+        return ernaehrungsplanService.bearbeiteEintrag(id, erstelleEintragErstellenDto);
+    }
 }
