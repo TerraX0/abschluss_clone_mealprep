@@ -1,7 +1,6 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { Zutat } from "../types/recipe";
-
 
 function EigenesRezeptFormular() {
     const [name, setName] = useState("");
@@ -9,6 +8,14 @@ function EigenesRezeptFormular() {
     const [anweisungen, setAnweisungen] = useState("");
     const [zutaten, setZutaten] = useState<Zutat[]>([{ name: "", menge: "" }]);
     const [kategorien, setKategorien] = useState<string[]>([]);
+
+    const [nameFehler, setNameFehler] = useState("");
+    const [kategorieFehler, setKategorieFehler] = useState("");
+    const [anweisungenFehler, setAnweisungenFehler] = useState("");
+    const [zutatenFehler, setZutatenFehler] = useState("");
+    const [serverFehler, setServerFehler] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function loadKategorien() {
@@ -22,7 +29,7 @@ function EigenesRezeptFormular() {
                 console.log("Kategorien konnten nicht geladen werden");
             }
         }
-        loadKategorien();
+        void loadKategorien();
     }, []);
 
     function aendereZutatName(index: number, wert: string) {
@@ -45,9 +52,66 @@ function EigenesRezeptFormular() {
         setZutaten(zutaten.filter((_, i) => i !== index));
     }
 
-    function handleSubmit(e: SyntheticEvent) {
+    function eingabenPruefen() {
+        let allesOk = true;
+
+        setNameFehler("");
+        setKategorieFehler("");
+        setAnweisungenFehler("");
+        setZutatenFehler("");
+
+        if (name.trim() === "") {
+            setNameFehler("Bitte gib einen Titel ein.");
+            allesOk = false;
+        }
+        if (kategorie === "") {
+            setKategorieFehler("Bitte wähle eine Kategorie.");
+            allesOk = false;
+        }
+        if (anweisungen.trim() === "") {
+            setAnweisungenFehler("Bitte beschreibe die Zubereitung.");
+            allesOk = false;
+        }
+        for (const zutat of zutaten) {
+            if (zutat.name.trim() === "" || zutat.menge.trim() === "") {
+                setZutatenFehler("Jede Zutat braucht einen Namen und eine Menge.");
+                allesOk = false;
+            }
+        }
+
+        return allesOk;
+    }
+
+    async function handleSubmit(e: SyntheticEvent) {
         e.preventDefault();
-        console.log({ name, kategorie, anweisungen, zutaten });
+        setServerFehler("");
+
+        if (!eingabenPruefen()) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/rezepte/eigene", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: name,
+                    kategorie: kategorie,
+                    anweisungen: anweisungen,
+                    zutaten: zutaten,
+                }),
+            });
+
+            if (response.ok) {
+                navigate("/sammlung");
+            } else if (response.status === 400) {
+                setServerFehler("Bitte prüfe deine Eingaben. Ein Feld ist ungültig.");
+            } else {
+                setServerFehler("Speichern hat nicht geklappt (Fehler " + response.status + ").");
+            }
+        } catch {
+            setServerFehler("Keine Verbindung zum Server.");
+        }
     }
 
     return (
@@ -59,6 +123,7 @@ function EigenesRezeptFormular() {
                 <div>
                     <label>Titel</label><br />
                     <input value={name} onChange={(e) => setName(e.target.value)} />
+                    {nameFehler !== "" && <p style={{ color: "red" }}>{nameFehler}</p>}
                 </div>
 
                 <div>
@@ -69,6 +134,7 @@ function EigenesRezeptFormular() {
                             <option key={k} value={k}>{k}</option>
                         ))}
                     </select>
+                    {kategorieFehler !== "" && <p style={{ color: "red" }}>{kategorieFehler}</p>}
                 </div>
 
                 <div>
@@ -79,6 +145,7 @@ function EigenesRezeptFormular() {
                         value={anweisungen}
                         onChange={(e) => setAnweisungen(e.target.value)}
                     />
+                    {anweisungenFehler !== "" && <p style={{ color: "red" }}>{anweisungenFehler}</p>}
                 </div>
 
                 <h3>Zutaten</h3>
@@ -99,10 +166,12 @@ function EigenesRezeptFormular() {
                         )}
                     </div>
                 ))}
+                {zutatenFehler !== "" && <p style={{ color: "red" }}>{zutatenFehler}</p>}
                 <button type="button" onClick={zutatHinzufuegen}>+ Zutat hinzufügen</button>
 
                 <br /><br />
                 <button type="submit">Rezept speichern</button>
+                {serverFehler !== "" && <p style={{ color: "red" }}>{serverFehler}</p>}
             </form>
         </div>
     );
