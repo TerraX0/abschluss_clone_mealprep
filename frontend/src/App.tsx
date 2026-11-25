@@ -1,12 +1,14 @@
-import RecipeSearch from "./components/RecipeSearch.tsx";
+import { Link } from "react-router";
+import RecipeSearch from "./components/RecipeSearch";
 
 function App() {
     return (
         <>
-            <h1>Mealprep</h1>
-            <RecipeSearch/>
+            <h1>Meal Prep</h1>
+            <Link to="/sammlung">Meine Rezepte</Link>
+            <RecipeSearch />
         </>
-    )
+    );
 }
 
-export default App
+export default App;
