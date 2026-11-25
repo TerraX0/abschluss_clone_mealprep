@@ -157,3 +157,8 @@ Content-Type: application/json
 ### Eigenes Rezept löschen
 DELETE http://localhost:8080/api/rezepte/3
 Accept: application/json
+
+
+### US-04: Wochenplan abrufen
+GET http://localhost:81/api/ernaehrungsplan?startDatum=2026-11-23&endDatum=2026-11-29
+Accept: application/json
