@@ -14,6 +14,17 @@ export interface Gericht {
     zutaten: Zutat[];
     istFavorit: boolean;
 }
+export interface GespeichertesRezept {
+    id: number;
+    externeId: string | null;
+    name: string;
+    kategorie: string;
+    kueche: string;
+    region: string;
+    anweisungen: string;
+    thumbnail: string;
+    zutaten: Zutat[];
+}
 
 export type ApiError = {
     message: string;
