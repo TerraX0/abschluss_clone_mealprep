@@ -61,4 +61,14 @@ public class ErnaehrungsplanController {
     ) {
         return ernaehrungsplanService.bearbeiteEintrag(id, erstelleEintragErstellenDto);
     }
+
+    @DeleteMapping("/woche")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void leereWoche(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDatum,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDatum
+    ) {
+        ernaehrungsplanService.leereWoche(startDatum, endDatum);
+    }
+
 }

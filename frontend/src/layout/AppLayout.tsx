@@ -33,6 +33,12 @@ export const NAV_ITEMS: NavItem[] = [
         hint: "Neu anlegen",
         imageUrl: "/images/17.jpg",
     },
+    {
+        path: "/wochenplan",
+        label: "Wochenplan",
+        hint: "Montag bis Sonntag",
+        imageUrl: "/images/21.jpg",
+    },
 ];
 
 // Kacheln

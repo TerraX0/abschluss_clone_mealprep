@@ -1,32 +1,34 @@
 // frontend/src/routes/routes.tsx
-import { createBrowserRouter, Navigate } from "react-router";
-import { App } from "../App.tsx";
-import { SearchPage } from "../components/SearchPage.tsx";
+import {createBrowserRouter, Navigate} from "react-router";
+import {App} from "../App.tsx";
+import {SearchPage} from "../components/SearchPage.tsx";
 import RezeptDetailansicht from "../components/RezeptDetailansicht.tsx";
 import MeineRezepte from "../components/MeineRezepte.tsx";
 import EigenesRezeptFormular from "../components/EigenesRezeptFormular.tsx";
+import Wochenplan from "../components/Wochenplan.tsx";
+import Einkaufsliste from "../components/Einkaufsliste.tsx";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <App/>,
         children: [
-            { index: true, element: <SearchPage /> },
+            {index: true, element: <SearchPage/>},
             {
                 path: "rezepte",
-                element: <MeineRezepte />,
+                element: <MeineRezepte/>,
             },
             {
                 path: "rezepte/neu",
-                element: <EigenesRezeptFormular />,
+                element: <EigenesRezeptFormular/>,
             },
             {
                 path: "rezepte/:id/bearbeiten",
-                element: <EigenesRezeptFormular />,
+                element: <EigenesRezeptFormular/>,
             },
             {
                 path: "rezepte/:id",
-                element: <RezeptDetailansicht />,
+                element: <RezeptDetailansicht/>,
             },
             {
                 path: "vorrat",
@@ -39,23 +41,14 @@ export const router = createBrowserRouter([
             },
             {
                 path: "wochenplan",
-                element: (
-                    <section className="placeholder-panel">
-                        <h2>Wochenplan</h2>
-                        <p>Wochenansicht Montag bis Sonntag (US-04 &amp; US-05).</p>
-                    </section>
-                ),
+                element: <Wochenplan/>,
             },
             {
+                // ----------------- NEU -------------------//
                 path: "einkaufsliste",
-                element: (
-                    <section className="placeholder-panel">
-                        <h2>Einkaufsliste</h2>
-                        <p>Generierte Einkaufsliste aus dem Wochenplan (US-06 &amp; US-07).</p>
-                    </section>
-                ),
+                element: <Einkaufsliste />,
             },
-            { path: "*", element: <Navigate to="/" replace /> },
+            {path: "*", element: <Navigate to="/" replace/>},
         ],
     },
 ]);

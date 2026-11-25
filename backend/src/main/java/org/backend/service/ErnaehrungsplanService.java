@@ -105,4 +105,19 @@ public class ErnaehrungsplanService {
                 );
                 return wandleInDtoUm(eintrag);
     }
+//----------- NEU -------------//
+@Transactional
+public long leereWoche(LocalDate startDatum, LocalDate endDatum) {
+    if (startDatum == null || endDatum == null || endDatum.isBefore(startDatum)) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Ungültiger Datumsbereich."
+        );
+    }
+
+    List<Ernaehrungsplaneintrag> treffer =
+            ernaehrungsplaneintragRepository.findByDatumBetween(startDatum, endDatum);
+    long anzahl = treffer.size();
+    ernaehrungsplaneintragRepository.deleteAll(treffer);
+    return anzahl;
+}
 }

@@ -78,7 +78,9 @@ export default function RezeptDetailansicht() {
     return (
         <>
             <h2>{name}</h2>
-            <button onClick={handleSave}>In meiner Sammlung speichern</button>
+            <button type="button" onClick={handleSave} className="btn-primary">
+                In meiner Sammlung speichern
+            </button>
             {saveMessage !== "" && <p>{saveMessage}</p>}
             <p>Kategorie: {kategorie} | Küche: {kueche}</p>
             <img src={thumbnail} alt={`Bild von ${name}`} width={300} height={300}/>
