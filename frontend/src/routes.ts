@@ -20,5 +20,9 @@ export const router = createBrowserRouter([
     {
         path: "/sammlung/neu",
         Component: EigenesRezeptFormular
+    },
+    {
+        path: "/sammlung/:id/bearbeiten",
+        Component: EigenesRezeptFormular
     }
 ]);
