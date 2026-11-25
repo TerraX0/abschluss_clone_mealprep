@@ -173,3 +173,6 @@ Content-Type: application/json
   "portionen": 4,
   "rezeptId": 1
 }
+
+### US-04: Einzelnen Wochenplaneintrag löschen
+DELETE http://localhost:81/api/ernaehrungsplan/1

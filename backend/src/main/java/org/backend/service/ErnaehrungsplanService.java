@@ -66,4 +66,14 @@ public class ErnaehrungsplanService {
 
         return wandleInDtoUm(gespeicherterEintrag);
     }
+
+    @Transactional
+    public void loescheEintrag(Long id){
+        if(!ernaehrungsplaneintragRepository.existsById(id)){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Eintrag nicht gefunden!");
+        }
+
+        ernaehrungsplaneintragRepository.deleteById(id);
+    }
 }
