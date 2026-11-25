@@ -1,12 +1,8 @@
-import RecipeSearch from "./components/RecipeSearch.tsx";
+import { AppLayout } from "./layout/AppLayout";
+import "./App.css";
 
-function App() {
-    return (
-        <>
-            <h1>Mealprep</h1>
-            <RecipeSearch/>
-        </>
-    )
+export function App() {
+    return <AppLayout />;
 }
 
-export default App
+export default App;

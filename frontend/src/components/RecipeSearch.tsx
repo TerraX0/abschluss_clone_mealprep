@@ -1,3 +1,5 @@
+//src/components/RecipeSearch.tsx
+
 import {useEffect, useState} from "react";
 import type {Gericht} from "../types/recipe";
 import {Link} from "react-router";
@@ -63,16 +65,19 @@ function RecipeSearch() {
     }
 
     return (
-        <div>
-            <h2>Rezepte suchen</h2>
+        <div className="recipe-search">
+            <h2 className="recipe-search__title">Rezepte suchen</h2>
 
+            <div className="recipe-search__controls">
             <input
+                className="recipe-search__input"
                 type="text"
                 placeholder="z. B. Pasta oder Curry"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <select
+                className="recipe-search__select"
                 value={selectedKategorie}
                 onChange={(e) => setSelectedKategorie(e.target.value)}
             >
@@ -84,7 +89,11 @@ function RecipeSearch() {
                 ))}
             </select>
 
-            <button onClick={handleSearch}>Suchen</button>
+            <button
+                type="button"
+                className="recipe-search__button"
+                onClick={handleSearch}>Suchen</button>
+            </div>
 
             {errorMessage !== "" && <p style={{color: "red"}}>{errorMessage}</p>}
 
@@ -92,13 +101,23 @@ function RecipeSearch() {
                 <p>Keine Rezepte gefunden. Versuche einen anderen Suchbegriff.</p>
             )}
 
-            <div>
+            <div className="recipe-grid">
                 {recipes.map((recipe) => (
-                    <Link to={`/rezepte/${recipe.id}`} key={recipe.id}>
-                        <img src={recipe.thumbnail} alt={recipe.name} width="200"/>
-                        <h3>{recipe.name}</h3>
-                        <p>Kategorie: {recipe.kategorie}</p>
-                        {recipe.region && <p>Region: {recipe.region}</p>}
+                    <Link to={`/rezepte/${recipe.id}`} key={recipe.id}
+                          className="recipe-card recipe-card--clickable">
+                        <img className="recipe-card__image"
+                            src={recipe.thumbnail} alt={recipe.name} width="200"/>
+                        <div className="recipe-card__body">
+                        <h3 className="recipe-card__title">{recipe.name}</h3>
+                            <div className="recipe-card__meta-row">
+                                <span className="recipe-card__tag">Kategorie: {recipe.kategorie}</span>
+                        {recipe.region &&
+                            (<span className="recipe-card__tag recipe-card__tag--muted">
+                                    Region: {recipe.region}
+                            </span>
+                            )}
+                        </div>
+                        </div>
                     </Link>
                 ))}
             </div>
