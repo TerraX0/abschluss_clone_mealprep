@@ -1,7 +1,7 @@
 // frontend/src/routes/routes.tsx
 import { createBrowserRouter, Navigate } from "react-router";
 import { App } from "../App.tsx";
-import { SearchPage } from "../layout/SearchPage.tsx";
+import { SearchPage } from "../components/SearchPage.tsx";
 import RezeptDetailansicht from "../components/RezeptDetailansicht.tsx";
 
 export const router = createBrowserRouter([

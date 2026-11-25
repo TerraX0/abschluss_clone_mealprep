@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import RecipeSearch from "../components/RecipeSearch";
-import { CARD_ITEMS } from "./AppLayout.tsx";
+import RecipeSearch from "./RecipeSearch.tsx";
+import { CARD_ITEMS } from "../layout/AppLayout.tsx";
 
 /* Kachel-Karussell */
 // Startseite ("/") aus den Kacheln ausklammern, weil da bereits die Suche ist.
