@@ -20,7 +20,19 @@ export const NAV_ITEMS: NavItem[] = [
         hint: "Externe Rezepte finden",
         imageUrl: "/images/11.jpg",
         end: true,
-    }
+    },
+    {
+        path: "/rezepte",
+        label: "Meine Rezepte",
+        hint: "Gespeicherte & eigene Rezepte",
+        imageUrl: "/images/15.jpg",
+    },
+    {
+        path: "/rezepte/neu",
+        label: "Eigenes Rezept",
+        hint: "Neu anlegen",
+        imageUrl: "/images/17.jpg",
+    },
 ];
 
 // Kacheln

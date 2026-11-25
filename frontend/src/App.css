@@ -662,3 +662,351 @@ body {
         transition: none;
     }
 }
+
+/* Unterseiten: Meine Rezepte, Eigenes Rezept & Rezept-Detailansicht */
+
+.subpage-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.subpage-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
+.subpage-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.85rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.back-link:hover {
+    color: var(--accent-pastel-blue-text);
+    text-decoration: underline;
+}
+
+/* Buttons für Aktionen auf Unterseiten */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: inherit;
+    text-decoration: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+    color: var(--accent-pastel-blue-text);
+    background-color: var(--accent-pastel-blue);
+    border: 1px solid #8aa9c7;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-pastel-blue-hover);
+}
+
+.btn-secondary {
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent-pastel-blue);
+    background-color: var(--bg-muted);
+}
+
+.btn-danger {
+    color: var(--error-pastel);
+    background-color: var(--error-bg);
+    border: 1px solid #ecc9c9;
+}
+
+.btn-danger:hover {
+    background-color: #fae3e3;
+    border-color: #dca9a9;
+}
+
+/* Meldungen (Fehler, Info, Erfolg) */
+.alert-error {
+    margin: 0.75rem 0 1.25rem;
+    padding: 0.75rem 1rem;
+    color: var(--error-pastel);
+    background-color: var(--error-bg);
+    border: 1px solid #ecc9c9;
+    border-radius: var(--radius);
+    font-size: 0.92rem;
+}
+
+.alert-success {
+    margin: 0.75rem 0 1.25rem;
+    padding: 0.75rem 1rem;
+    color: #24523a;
+    background-color: #edf7f1;
+    border: 1px solid #bfe0cc;
+    border-radius: var(--radius);
+    font-size: 0.92rem;
+}
+
+.empty-state {
+    margin: 0;
+    padding: 1.25rem;
+    color: var(--text-muted);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+}
+
+/* Zusätzliche Aktionen unter einer Rezeptkarte in MeineRezepte */
+.recipe-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-soft);
+}
+
+.recipe-card__badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-pastel-blue-text);
+    background-color: var(--bg-muted);
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+}
+
+/* Formular: EigenesRezeptFormular */
+.recipe-form-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-input:hover,
+.form-select:hover,
+.form-textarea:hover {
+    border-color: var(--accent-pastel-blue);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    border-color: var(--accent-pastel-blue-hover);
+    box-shadow: 0 0 0 3px rgba(155, 184, 211, 0.28);
+}
+
+.form-error {
+    margin: 0.35rem 0 0;
+    color: var(--error-pastel);
+    font-size: 0.85rem;
+}
+
+.ingredients-section {
+    margin-top: 1.25rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--border-soft);
+}
+
+.ingredients-heading {
+    margin: 0 0 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.ingredient-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+    gap: 0.55rem;
+    align-items: center;
+    margin-bottom: 0.6rem;
+}
+
+.ingredient-remove-btn {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: var(--error-pastel);
+    background-color: transparent;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ingredient-remove-btn:hover {
+    background-color: var(--error-bg);
+    border-color: #ecc9c9;
+}
+
+.form-submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--border-soft);
+}
+
+/* Detailansicht: RezeptDetailansicht */
+.recipe-detail {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+
+.recipe-detail__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.recipe-detail__title {
+    margin: 0;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.recipe-detail__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1.15rem;
+}
+
+.recipe-detail__image {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-soft);
+    background-color: var(--bg-muted);
+    margin-bottom: 1.25rem;
+}
+
+.recipe-detail__section {
+    margin-top: 1.25rem;
+}
+
+.recipe-detail__section h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.recipe-detail__instructions {
+    margin: 0;
+    white-space: pre-line;
+    color: var(--text-main);
+}
+
+.recipe-detail__ingredients {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.recipe-detail__ingredients li {
+    margin-bottom: 0.3rem;
+}
+
+.back-link:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-danger:focus-visible,
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible,
+.ingredient-remove-btn:focus-visible {
+    outline: 3px solid var(--accent-pastel-blue-text);
+    outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+    .ingredient-row {
+        grid-template-columns: 1fr auto;
+    }
+
+    .ingredient-row > input:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .recipe-form-card,
+    .recipe-detail {
+        padding: 1.1rem;
+    }
+}

@@ -142,7 +142,7 @@ function EigenesRezeptFormular() {
             });
 
             if (response.ok) {
-                navigate("/sammlung");
+                navigate("/rezepte");
             } else if (response.status === 400) {
                 setServerFehler("Bitte prüfe deine Eingaben. Ein Feld ist ungültig.");
             } else if (response.status === 404) {
@@ -159,64 +159,91 @@ function EigenesRezeptFormular() {
 
     return (
         <div>
-            {/* NEU: Überschrift passend zum Modus */}
-            <h2>{istBearbeiten ? "Rezept bearbeiten" : "Eigenes Rezept anlegen"}</h2>
-            <Link to="/sammlung">← Zurück zu meinen Rezepten</Link>
+            <Link to="/rezepte" className="back-link">← Zurück zu meinen Rezepten</Link>
+            <div className="subpage-header">
+                {/* NEU: Überschrift passend zum Modus */}
+                <h2 className="subpage-title">{istBearbeiten ? "Rezept bearbeiten" : "Eigenes Rezept anlegen"}</h2>
+            </div>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Titel</label><br />
-                    <input value={name} onChange={(e) => setName(e.target.value)} />
-                    {nameFehler !== "" && <p style={{ color: "red" }}>{nameFehler}</p>}
+            <form onSubmit={handleSubmit} className="recipe-form-card">
+                <div className="form-group">
+                    <label className="form-label">Titel</label><br />
+                    <input
+                        className="form-input"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                    {nameFehler !== "" && <p className="form-error">{nameFehler}</p>}
                 </div>
 
-                <div>
-                    <label>Kategorie</label><br />
-                    <select value={kategorie} onChange={(e) => setKategorie(e.target.value)}>
+                <div className="form-group">
+                    <label className="form-label">Kategorie</label><br />
+                    <select
+                        className="form-select"
+                        value={kategorie}
+                        onChange={(e) => setKategorie(e.target.value)}
+                    >
                         <option value="">Bitte wählen</option>
                         {kategorien.map((k) => (
                             <option key={k} value={k}>{k}</option>
                         ))}
                     </select>
-                    {kategorieFehler !== "" && <p style={{ color: "red" }}>{kategorieFehler}</p>}
+                    {kategorieFehler !== "" && <p className="form-error">{kategorieFehler}</p>}
                 </div>
 
-                <div>
-                    <label>Zubereitung</label><br />
+                <div className="form-group">
+                    <label className="form-label">Zubereitung</label><br />
                     <textarea
+                        className="form-textarea"
                         rows={6}
                         cols={50}
                         value={anweisungen}
                         onChange={(e) => setAnweisungen(e.target.value)}
                     />
-                    {anweisungenFehler !== "" && <p style={{ color: "red" }}>{anweisungenFehler}</p>}
+                    {anweisungenFehler !== "" && <p className="form-error">{anweisungenFehler}</p>}
                 </div>
 
-                <h3>Zutaten</h3>
-                {zutaten.map((zutat, index) => (
-                    <div key={index}>
-                        <input
-                            placeholder="Zutat, z. B. Kartoffeln"
-                            value={zutat.name}
-                            onChange={(e) => aendereZutatName(index, e.target.value)}
-                        />
-                        <input
-                            placeholder="Menge, z. B. 500 g"
-                            value={zutat.menge}
-                            onChange={(e) => aendereZutatMenge(index, e.target.value)}
-                        />
-                        {zutaten.length > 1 && (
-                            <button type="button" onClick={() => zutatEntfernen(index)}>✕</button>
-                        )}
-                    </div>
-                ))}
-                {zutatenFehler !== "" && <p style={{ color: "red" }}>{zutatenFehler}</p>}
-                <button type="button" onClick={zutatHinzufuegen}>+ Zutat hinzufügen</button>
+                <div className="ingredients-section">
+                    <h3 className="ingredients-heading">Zutaten</h3>
+                    {zutaten.map((zutat, index) => (
+                        <div key={index} className="ingredient-row">
+                            <input
+                                className="form-input"
+                                placeholder="Zutat, z. B. Kartoffeln"
+                                value={zutat.name}
+                                onChange={(e) => aendereZutatName(index, e.target.value)}
+                            />
+                            <input
+                                className="form-input"
+                                placeholder="Menge, z. B. 500 g"
+                                value={zutat.menge}
+                                onChange={(e) => aendereZutatMenge(index, e.target.value)}
+                            />
+                            {zutaten.length > 1 && (
+                                <button
+                                    type="button"
+                                    className="ingredient-remove-btn"
+                                    onClick={() => zutatEntfernen(index)}
+                                >
+                                    ✕
+                                </button>
+                            )}
+                        </div>
+                    ))}
+                    {zutatenFehler !== "" && <p className="form-error">{zutatenFehler}</p>}
+                    <button type="button" className="btn-secondary" onClick={zutatHinzufuegen}>
+                        + Zutat hinzufügen
+                    </button>
+                </div>
 
                 <br /><br />
-                {/* NEU: Button-Text passend zum Modus */}
-                <button type="submit">{istBearbeiten ? "Änderungen speichern" : "Rezept speichern"}</button>
-                {serverFehler !== "" && <p style={{ color: "red" }}>{serverFehler}</p>}
+                <div className="form-submit-row">
+                    {/* NEU: Button-Text passend zum Modus */}
+                    <button type="submit" className="btn-primary">
+                        {istBearbeiten ? "Änderungen speichern" : "Rezept speichern"}
+                    </button>
+                    {serverFehler !== "" && <p className="alert-error">{serverFehler}</p>}
+                </div>
             </form>
         </div>
     );
