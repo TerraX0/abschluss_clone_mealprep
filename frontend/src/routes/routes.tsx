@@ -1,0 +1,61 @@
+// frontend/src/routes/routes.tsx
+import { createBrowserRouter, Navigate } from "react-router";
+import { App } from "../App.tsx";
+import { SearchPage } from "../components/SearchPage.tsx";
+import RezeptDetailansicht from "../components/RezeptDetailansicht.tsx";
+import MeineRezepte from "../components/MeineRezepte.tsx";
+import EigenesRezeptFormular from "../components/EigenesRezeptFormular.tsx";
+
+export const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            { index: true, element: <SearchPage /> },
+            {
+                path: "rezepte",
+                element: <MeineRezepte />,
+            },
+            {
+                path: "rezepte/neu",
+                element: <EigenesRezeptFormular />,
+            },
+            {
+                path: "rezepte/:id/bearbeiten",
+                element: <EigenesRezeptFormular />,
+            },
+            {
+                path: "rezepte/:id",
+                element: <RezeptDetailansicht />,
+            },
+            {
+                path: "vorrat",
+                element: (
+                    <section className="placeholder-panel">
+                        <h2>Vorratsschrank</h2>
+                        <p>Verwaltung vorhandener Vorräte (US-09).</p>
+                    </section>
+                ),
+            },
+            {
+                path: "wochenplan",
+                element: (
+                    <section className="placeholder-panel">
+                        <h2>Wochenplan</h2>
+                        <p>Wochenansicht Montag bis Sonntag (US-04 &amp; US-05).</p>
+                    </section>
+                ),
+            },
+            {
+                path: "einkaufsliste",
+                element: (
+                    <section className="placeholder-panel">
+                        <h2>Einkaufsliste</h2>
+                        <p>Generierte Einkaufsliste aus dem Wochenplan (US-06 &amp; US-07).</p>
+                    </section>
+                ),
+            },
+            { path: "*", element: <Navigate to="/" replace /> },
+        ],
+    },
+]);

@@ -48,34 +48,63 @@ function MeineRezepte() {
 
     return (
         <div>
-            <h2>Meine Rezepte</h2>
-            <Link to="/">← Zurück zur Suche</Link>
-            <br />
-            <Link to="/sammlung/neu">+ Eigenes Rezept anlegen</Link>
+            <Link to="/" className="back-link">← Zurück zur Suche</Link>
+            <div className="subpage-header">
+                <h2 className="subpage-title">Meine Rezepte</h2>
+                <div className="subpage-actions">
+                    <Link to="/rezepte/neu" className="btn-primary">+ Eigenes Rezept anlegen</Link>
+                </div>
+            </div>
 
             {isLoading && <p>Rezepte werden geladen...</p>}
 
-            {errorMessage !== "" && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {errorMessage !== "" && <p className="alert-error">{errorMessage}</p>}
 
             {!isLoading && errorMessage === "" && rezepte.length === 0 && (
-                <p>Du hast noch keine Rezepte gespeichert.</p>
+                <p className="empty-state">Du hast noch keine Rezepte gespeichert.</p>
             )}
 
-            {rezepte.map((rezept) => (
-                <div key={rezept.id}>
-                    {rezept.thumbnail && <img src={rezept.thumbnail} alt={rezept.name} width="200" />}
-                    <h3>{rezept.name}</h3>
-                    <p>Kategorie: {rezept.kategorie}</p>
-                    {rezept.externeId === null && (
-                        <div>
-                            <p>✏️ Eigenes Rezept</p>
-                            <Link to={"/sammlung/" + rezept.id + "/bearbeiten"}>Bearbeiten</Link>
-                            {" "}
-                            <button onClick={() => handleDelete(rezept.id)}>Löschen</button>
+            <div className="recipe-grid">
+                {rezepte.map((rezept) => (
+                    <div key={rezept.id} className="recipe-card">
+                        {rezept.thumbnail && (
+                            <img
+                                src={rezept.thumbnail}
+                                alt={rezept.name}
+                                width="200"
+                                className="recipe-card__image"
+                            />
+                        )}
+                        <div className="recipe-card__body">
+                            <h3 className="recipe-card__title">{rezept.name}</h3>
+                            <div className="recipe-card__meta-row">
+                                <span className="recipe-card__tag">Kategorie: {rezept.kategorie}</span>
+                                {rezept.externeId === null && (
+                                    <span className="recipe-card__badge">✏️ Eigenes Rezept</span>
+                                )}
+                            </div>
+                            {rezept.externeId === null && (
+                                <div className="recipe-card__actions">
+                                    <Link
+                                        to={"/rezepte/" + rezept.id + "/bearbeiten"}
+                                        className="btn-secondary"
+                                    >
+                                        Bearbeiten
+                                    </Link>
+                                    {" "}
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDelete(rezept.id)}
+                                        className="btn-danger"
+                                    >
+                                        Löschen
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            ))}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -1,14 +1,8 @@
-import { Link } from "react-router";
-import RecipeSearch from "./components/RecipeSearch";
+import { AppLayout } from "./layout/AppLayout";
+import "./App.css";
 
-function App() {
-    return (
-        <>
-            <h1>Meal Prep</h1>
-            <Link to="/sammlung">Meine Rezepte</Link>
-            <RecipeSearch />
-        </>
-    );
+export function App() {
+    return <AppLayout />;
 }
 
 export default App;
