@@ -162,3 +162,14 @@ Accept: application/json
 ### US-04: Wochenplan abrufen
 GET http://localhost:81/api/ernaehrungsplan?startDatum=2026-11-23&endDatum=2026-11-29
 Accept: application/json
+
+### US-04: Wochenplaneintrag erstellen
+POST http://localhost:81/api/ernaehrungsplan
+Content-Type: application/json
+
+{
+  "datum": "2026-11-25",
+  "mahlzeit": "MITTAGESSEN",
+  "portionen": 4,
+  "rezeptId": 1
+}

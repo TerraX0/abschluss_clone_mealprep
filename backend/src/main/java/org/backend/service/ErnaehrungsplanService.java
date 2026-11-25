@@ -1,11 +1,17 @@
 package org.backend.service;
 
-import jakarta.transaction.Transactional;
+
 import org.backend.dto.ErnaehrungsplaneintragDto;
 import org.backend.entity.Ernaehrungsplaneintrag;
 import org.backend.repository.ErnaehrungsplaneintragRepository;
+import org.backend.repository.RezeptRepository;
+import org.backend.dto.ErnaehrungsplaneintragErstellenDto;
+import org.backend.entity.Rezept;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,12 +20,15 @@ import java.util.List;
 public class ErnaehrungsplanService {
     private final ErnaehrungsplaneintragRepository ernaehrungsplaneintragRepository;
 
-    public ErnaehrungsplanService(ErnaehrungsplaneintragRepository ernaehrungsplaneintragRepository) {
+    private final RezeptRepository rezeptRepository;
+
+    public ErnaehrungsplanService(ErnaehrungsplaneintragRepository ernaehrungsplaneintragRepository, RezeptRepository rezeptRepository) {
         this.ernaehrungsplaneintragRepository = ernaehrungsplaneintragRepository;
+        this.rezeptRepository = rezeptRepository;
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ErnaehrungsplaneintragDto> holeWochenplan(LocalDate startDatum, LocalDate endDatum) {
         return ernaehrungsplaneintragRepository.findByDatumBetween(startDatum, endDatum)
                 .stream()
@@ -27,7 +36,7 @@ public class ErnaehrungsplanService {
                 .toList();
     }
 
-    private ErnaehrungsplaneintragDto wandleInDtoUm(Ernaehrungsplaneintrag eintrag ) {
+    private ErnaehrungsplaneintragDto wandleInDtoUm(Ernaehrungsplaneintrag eintrag) {
         return new ErnaehrungsplaneintragDto(
                 eintrag.getId(),
                 eintrag.getDatum(),
@@ -35,5 +44,26 @@ public class ErnaehrungsplanService {
                 eintrag.getPortionen(),
                 eintrag.getRezept().getId()
         );
+    }
+
+    @Transactional
+    public ErnaehrungsplaneintragDto erstelleEintrag(
+            ErnaehrungsplaneintragErstellenDto ernaehrungsplaneintragErstellenDto
+    ) {
+        Rezept rezept = rezeptRepository.findById(ernaehrungsplaneintragErstellenDto.rezeptId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND, "Rezept nicht gefunden!"
+                        )
+                );
+        Ernaehrungsplaneintrag eintrag = new Ernaehrungsplaneintrag(
+                ernaehrungsplaneintragErstellenDto.datum(),
+                ernaehrungsplaneintragErstellenDto.mahlzeit(),
+                ernaehrungsplaneintragErstellenDto.portionen(),
+                rezept
+        );
+        Ernaehrungsplaneintrag gespeicherterEintrag = ernaehrungsplaneintragRepository.save(eintrag);
+
+        return wandleInDtoUm(gespeicherterEintrag);
     }
 }

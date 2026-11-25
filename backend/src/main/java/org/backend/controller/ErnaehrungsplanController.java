@@ -2,16 +2,22 @@ package org.backend.controller;
 
 import org.backend.dto.ErnaehrungsplaneintragDto;
 import org.backend.service.ErnaehrungsplanService;
+import org.backend.dto.ErnaehrungsplaneintragErstellenDto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/ernaehrungsplan")
 public class ErnaehrungsplanController {
@@ -30,4 +36,13 @@ public class ErnaehrungsplanController {
         return ernaehrungsplanService.holeWochenplan(startDatum,endDatum);
 
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ErnaehrungsplaneintragDto erstelleEintrag(
+            @Valid @RequestBody ErnaehrungsplaneintragErstellenDto erstelleEintragErstellenDto)
+    {
+       return ernaehrungsplanService.erstelleEintrag(erstelleEintragErstellenDto);
+    }
+
 }
