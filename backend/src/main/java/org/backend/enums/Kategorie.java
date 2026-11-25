@@ -17,8 +17,8 @@ public enum Kategorie {
     VEGETARISCH;
 
     //übersetzung der gelieferten Werte
-    public static Kategorie vonApiWert(String apiWert){
-        return switch(apiWert){
+    public static Kategorie vonApiWert(String apiWert) {
+        return switch (apiWert) {
             case "Beef" -> RINDFLEISCH;
             case "Breakfast" -> FRUEHSTUECK;
             case "Chicken" -> HAEHNCHEN;

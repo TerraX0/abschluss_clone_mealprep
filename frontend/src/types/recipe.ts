@@ -14,3 +14,8 @@ export interface Gericht {
     zutaten: Zutat[];
     istFavorit: boolean;
 }
+
+export type ApiError = {
+    message: string;
+    code: number;
+};
