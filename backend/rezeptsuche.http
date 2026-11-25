@@ -35,3 +35,125 @@ Accept: application/json
 ### Vegetarische Rezepte abrufen
 GET http://localhost:8080/api/mealprep/kategorie?kategorie=VEGETARISCH
 Accept: application/json
+
+### Rezept speichern
+POST http://localhost:8080/api/rezepte
+Content-Type: application/json
+
+{
+  "id": "52820",
+  "name": "Test Chicken Curry",
+  "kategorie": "HAEHNCHEN",
+  "kueche": "Indian",
+  "region": "",
+  "anweisungen": "Cook the chicken.",
+  "thumbnail": "",
+  "zutaten": [
+    {
+      "name": "Chicken",
+      "menge": "500 g"
+    }
+  ],
+  "istFavorit": false
+}
+
+### Vollständiges Rezept speichern
+POST http://localhost:8080/api/rezepte
+Content-Type: application/json
+
+{
+  "id": "999001",
+  "name": "Test Chicken Curry",
+  "kategorie": "HAEHNCHEN",
+  "kueche": "Indian",
+  "region": "",
+  "anweisungen": "Cook the chicken and add the rice.",
+  "thumbnail": "",
+  "zutaten": [
+    {
+      "name": "Chicken",
+      "menge": "500 g"
+    },
+    {
+      "name": "Rice",
+      "menge": "200 g"
+    }
+  ],
+  "istFavorit": false
+}
+
+### Alle gespeicherten Rezepte abrufen
+GET http://localhost:8080/api/rezepte
+Accept: application/json
+
+### Eigenes Rezept erstellen
+POST http://localhost:8080/api/rezepte/eigene
+Content-Type: application/json
+
+{
+  "name": "Meine Kartoffelsuppe",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln kochen und anschließend pürieren.",
+  "zutaten": [
+    {
+      "name": "Kartoffeln",
+      "menge": "500 g"
+    },
+    {
+      "name": "Milch",
+      "menge": "200 ml"
+    }
+  ]
+}
+
+### Eigenes Rezept ohne Namen
+POST http://localhost:8080/api/rezepte/eigene
+Content-Type: application/json
+
+{
+  "name": "",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln kochen.",
+  "zutaten": [
+    {
+      "name": "Kartoffeln",
+      "menge": "500 g"
+    }
+  ]
+}
+
+### Eigenes Rezept ohne Zutaten
+POST http://localhost:8080/api/rezepte/eigene
+Content-Type: application/json
+
+{
+  "name": "Kartoffelsuppe",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln kochen.",
+  "zutaten": []
+}
+
+
+### Eigenes Rezept bearbeiten
+PUT http://localhost:8080/api/rezepte/3
+Content-Type: application/json
+
+{
+  "name": "Meine Kartoffelsuppe verbessert",
+  "kategorie": "SONSTIGES",
+  "anweisungen": "Kartoffeln 25 Minuten kochen und anschließend pürieren.",
+  "zutaten": [
+    {
+      "name": "Kartoffeln",
+      "menge": "750 g"
+    },
+    {
+      "name": "Milch",
+      "menge": "250 ml"
+    }
+  ]
+}
+
+### Eigenes Rezept löschen
+DELETE http://localhost:8080/api/rezepte/3
+Accept: application/json

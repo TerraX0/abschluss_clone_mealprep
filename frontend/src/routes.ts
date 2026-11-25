@@ -2,6 +2,7 @@ import {createBrowserRouter} from "react-router";
 import App from "./App.tsx";
 import RezeptDetailansicht from "./components/RezeptDetailansicht.tsx";
 import MeineRezepte from "./components/MeineRezepte.tsx";
+import EigenesRezeptFormular from "./components/EigenesRezeptFormular.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -15,5 +16,9 @@ export const router = createBrowserRouter([
     {
         path: "/sammlung",
         Component: MeineRezepte
+    },
+    {
+        path: "/sammlung/neu",
+        Component: EigenesRezeptFormular
     }
 ]);

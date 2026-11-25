@@ -30,6 +30,8 @@ function MeineRezepte() {
         <div>
             <h2>Meine Rezepte</h2>
             <Link to="/">← Zurück zur Suche</Link>
+            <br />
+            <Link to="/sammlung/neu">+ Eigenes Rezept anlegen</Link>
 
             {isLoading && <p>Rezepte werden geladen...</p>}
 
