@@ -1010,3 +1010,112 @@ body {
         padding: 1.1rem;
     }
 }
+
+/* Einkaufsliste (US-06 & US-07) */
+.shopping-add-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+    padding: 0.95rem 1rem;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+}
+
+.shopping-add-form input {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.shopping-add-form input:hover {
+    border-color: var(--accent-pastel-blue);
+}
+
+.shopping-add-form input:focus {
+    border-color: var(--accent-pastel-blue-hover);
+    box-shadow: 0 0 0 3px rgba(155, 184, 211, 0.28);
+}
+
+.shopping-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.shopping-list__item {
+    border-bottom: 1px solid var(--border-soft);
+    transition: background-color 0.15s ease;
+}
+
+.shopping-list__item:last-child {
+    border-bottom: none;
+}
+
+.shopping-list__item:hover {
+    background-color: rgba(232, 238, 242, 0.45);
+}
+
+.shopping-list__label {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.shopping-list__label input[type="checkbox"] {
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--accent-pastel-blue-text);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.shopping-list__label small {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+}
+
+/* Bereich „Im Einkaufswagen“ für erledigte Einträge */
+.shopping-cart-done {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: rgba(232, 238, 242, 0.55);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+}
+
+.shopping-cart-done h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.shopping-list--done {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.shopping-list__item--done {
+    color: var(--text-muted);
+    background-color: transparent;
+}
+
+@media (max-width: 640px) {
+    .shopping-add-form {
+        grid-template-columns: 1fr;
+    }
+}

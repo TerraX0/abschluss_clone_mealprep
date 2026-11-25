@@ -231,4 +231,47 @@ public class EinkaufslisteService {
             return String.format(Locale.GERMAN, "%.1f", gerundetAufZehntel);
         }
     }
+
+    // ----------------------------NEU US7-------------------------------------//
+    @Transactional
+    public EinkaufslistenEintragDto schalteErledigtUm(Long id) {
+        EinkaufslistenEintrag eintrag = einkaufslistenEintragRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Einkaufslisteneintrag nicht gefunden: " + id
+                ));
+
+        eintrag.setErledigt(!eintrag.isErledigt());
+        EinkaufslistenEintrag gespeichert = einkaufslistenEintragRepository.save(eintrag);
+        return wandleInDtoUm(gespeichert);
+    }
+
+    @Transactional
+    public EinkaufslistenEintragDto fuegeFreienArtikelHinzu(String name, String menge) {
+        if (name == null || name.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Artikelname darf nicht leer sein."
+            );
+        }
+
+        String bereinigterName = kapitalisiereErstenBuchstaben(name.trim());
+        String bereinigteMenge = (menge != null && !menge.isBlank())
+                ? menge.trim() : "";
+
+
+        EinkaufslistenEintrag neuerEintrag = new EinkaufslistenEintrag(
+                bereinigterName,
+                bereinigteMenge,
+                // 0 = nicht aus dem Wochenplan generiert, sondern manuell ergänzt
+                0,
+                false
+        );
+
+        EinkaufslistenEintrag gespeichert = einkaufslistenEintragRepository.save(neuerEintrag);
+        return wandleInDtoUm(gespeichert);
+    }
+
+    @Transactional
+    public void loescheErledigteEintraege() {
+        einkaufslistenEintragRepository.deleteByErledigtTrue();
+    }
 }
