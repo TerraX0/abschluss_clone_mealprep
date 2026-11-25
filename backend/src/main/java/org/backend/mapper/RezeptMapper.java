@@ -127,7 +127,10 @@ public class RezeptMapper {
                 rezept.getRegion(),
                 rezept.getAnweisungen(),
                 rezept.getThumbnail(),
-                zutaten
+                zutaten,
+                // Für US-8
+                rezept.isIstFavorit()
+
         );
     }
 }

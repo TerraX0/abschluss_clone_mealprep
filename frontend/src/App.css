@@ -1119,3 +1119,28 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* US-08: Filterleiste & Favoriten-Darstellung in MeineRezepte */
+.recipe-filter-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+    padding: 0.9rem 1rem;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+}
+
+.recipe-card__header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+    .recipe-filter-bar {
+        grid-template-columns: 1fr;
+    }
+}

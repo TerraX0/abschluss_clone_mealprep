@@ -24,6 +24,8 @@ export interface GespeichertesRezept {
     anweisungen: string;
     thumbnail: string;
     zutaten: Zutat[];
+    // Für US-8
+    istFavorit: boolean;
 }
 
 export type ApiError = {

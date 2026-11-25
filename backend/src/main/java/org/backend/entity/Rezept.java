@@ -31,6 +31,14 @@ public class Rezept {
 
     private String thumbnail;
 
+    // Für US-8
+    @Column(nullable = false)
+    private boolean istFavorit = false;
+
+    public void schalteFavoritUm() {
+        this.istFavorit = !this.istFavorit;
+    }
+
     @OneToMany(mappedBy = "rezept", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RezeptZutat> zutaten = new ArrayList<>();
     protected Rezept() {

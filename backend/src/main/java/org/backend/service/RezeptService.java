@@ -6,6 +6,7 @@ import org.backend.dto.GespeichertesRezeptDto;
 import org.backend.dto.ZutatDto;
 import org.backend.entity.Rezept;
 import org.backend.entity.RezeptZutat;
+import org.backend.enums.Kategorie;
 import org.backend.mapper.RezeptMapper;
 import org.backend.repository.RezeptRepository;
 import org.backend.dto.EigenesRezeptErstellenDto;
@@ -154,5 +155,36 @@ public class RezeptService {
         }
 
         rezeptRepository.delete(rezept);
+    }
+
+    // Für US-8
+    @Transactional
+    public GespeichertesRezeptDto schalteFavoritUm(Long id) {
+        Rezept rezept = rezeptRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Rezept nicht gefunden!"
+                ));
+
+        rezept.schalteFavoritUm();
+        return rezeptMapper.wandleEntityInDtoUm(rezept);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GespeichertesRezeptDto> filtereRezepte(
+            String suche,
+            Kategorie kategorie,
+            boolean nurFavoriten
+    ) {
+        String suchbegriff = (suche != null) ? suche.trim().toLowerCase() : "";
+
+        return rezeptRepository.findAll()
+                .stream()
+                .filter(r -> !nurFavoriten || r.isIstFavorit())
+                .filter(r -> kategorie == null || r.getKategorie() == kategorie)
+                .filter(r -> suchbegriff.isEmpty()
+                        || (r.getName() != null && r.getName().toLowerCase().contains(suchbegriff)))
+                .map(rezeptMapper::wandleEntityInDtoUm)
+                .toList();
     }
 }

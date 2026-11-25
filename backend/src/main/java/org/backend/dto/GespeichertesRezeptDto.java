@@ -12,6 +12,8 @@ public record GespeichertesRezeptDto(
         String region,
         String anweisungen,
         String thumbnail,
-        List<ZutatDto> zutaten
+        List<ZutatDto> zutaten,
+        // Für US-8
+        boolean istFavorit
 ) {
 }
