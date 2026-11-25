@@ -157,3 +157,58 @@ Content-Type: application/json
 ### Eigenes Rezept löschen
 DELETE http://localhost:8080/api/rezepte/3
 Accept: application/json
+
+
+### US-04: Wochenplan abrufen
+GET http://localhost:81/api/ernaehrungsplan?startDatum=2026-11-23&endDatum=2026-11-29
+Accept: application/json
+
+### US-04: Wochenplaneintrag erstellen
+POST http://localhost:81/api/ernaehrungsplan
+Content-Type: application/json
+
+{
+  "datum": "2026-11-25",
+  "mahlzeit": "MITTAGESSEN",
+  "portionen": 4,
+  "rezeptId": 1
+}
+
+### US-04: Einzelnen Wochenplaneintrag löschen
+DELETE http://localhost:81/api/ernaehrungsplan/1
+
+### US-04: Wochenplaneintrag bearbeiten
+PUT http://localhost:81/api/ernaehrungsplan/2
+Content-Type: application/json
+
+{
+  "datum": "2026-11-25",
+  "mahlzeit": "ABENDESSEN",
+  "portionen": 6,
+  "rezeptId": 1
+}
+
+### US-04: Aktualisierten Wochenplan abrufen
+GET http://localhost:81/api/ernaehrungsplan?startDatum=2026-11-23&endDatum=2026-11-29
+Accept: application/json
+
+### US-04: Ungültige Portionen testen
+POST http://localhost:81/api/ernaehrungsplan
+Content-Type: application/json
+
+{
+  "datum": "2026-11-25",
+  "mahlzeit": "ABENDESSEN",
+  "portionen": 0,
+  "rezeptId": 1
+}
+
+### US-04: Fehlende Rezept-ID
+POST http://localhost:81/api/ernaehrungsplan
+Content-Type: application/json
+
+{
+  "datum": "2026-11-25",
+  "mahlzeit": "ABENDESSEN",
+  "portionen": 4
+}
