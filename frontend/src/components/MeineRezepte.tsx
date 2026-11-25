@@ -25,6 +25,26 @@ function MeineRezepte() {
 
         loadRezepte();
     }, []);
+    async function handleDelete(id: number) {
+        const sicher = window.confirm("Möchtest du dieses Rezept wirklich löschen?");
+        if (!sicher) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/rezepte/" + id, { method: "DELETE" });
+
+            if (response.ok) {
+                setRezepte(rezepte.filter((rezept) => rezept.id !== id));
+            } else if (response.status === 409) {
+                setErrorMessage("Gespeicherte Rezepte aus der Suche können nicht gelöscht werden.");
+            } else {
+                setErrorMessage("Löschen hat nicht geklappt (Fehler " + response.status + ").");
+            }
+        } catch {
+            setErrorMessage("Keine Verbindung zum Server.");
+        }
+    }
 
     return (
         <div>
@@ -46,7 +66,14 @@ function MeineRezepte() {
                     {rezept.thumbnail && <img src={rezept.thumbnail} alt={rezept.name} width="200" />}
                     <h3>{rezept.name}</h3>
                     <p>Kategorie: {rezept.kategorie}</p>
-                    {rezept.externeId === null && <p>✏️ Eigenes Rezept</p>}
+                    {rezept.externeId === null && (
+                        <div>
+                            <p>✏️ Eigenes Rezept</p>
+                            <Link to={"/sammlung/" + rezept.id + "/bearbeiten"}>Bearbeiten</Link>
+                            {" "}
+                            <button onClick={() => handleDelete(rezept.id)}>Löschen</button>
+                        </div>
+                    )}
                 </div>
             ))}
         </div>
