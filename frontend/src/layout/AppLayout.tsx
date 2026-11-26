@@ -46,6 +46,12 @@ export const NAV_ITEMS: NavItem[] = [
         hint: "Montag bis Sonntag",
         imageUrl: "/images/21.jpg",
     },
+    {
+        path: "/zufallgericht",
+        label: "Zufallgericht",
+        hint: "Zufälliges Rezept als Inspiration",
+        imageUrl: "/images/14.jpg",
+    },
 ];
 
 // Kacheln

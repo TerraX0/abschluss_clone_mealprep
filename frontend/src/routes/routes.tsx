@@ -9,6 +9,7 @@ import Wochenplan from "../components/Wochenplan.tsx";
 import Einkaufsliste from "../components/Einkaufsliste.tsx";
 // Für US9
 import Vorratsschrank from "../components/Vorratsschrank.tsx";
+import { Zufallgericht } from "../components/Zufallgericht";
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +47,12 @@ export const router = createBrowserRouter([
                 path: "einkaufsliste",
                 element: <Einkaufsliste />,
             },
+
+            {
+                path: "/zufallgericht",
+                element: <Zufallgericht />,
+            },
+
             {path: "*", element: <Navigate to="/" replace/>},
         ],
     },
