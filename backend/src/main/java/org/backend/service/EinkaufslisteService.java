@@ -41,13 +41,17 @@ public class EinkaufslisteService {
 
     private final ErnaehrungsplaneintragRepository ernaehrungsplaneintragRepository;
     private final EinkaufslistenEintragRepository einkaufslistenEintragRepository;
+    // US 9: VorratService injizieren
+    private final VorratService vorratService;
 
     public EinkaufslisteService(
             ErnaehrungsplaneintragRepository ernaehrungsplaneintragRepository,
-            EinkaufslistenEintragRepository einkaufslistenEintragRepository
+            EinkaufslistenEintragRepository einkaufslistenEintragRepository,
+            VorratService vorratService // US-09
     ) {
         this.ernaehrungsplaneintragRepository = ernaehrungsplaneintragRepository;
         this.einkaufslistenEintragRepository = einkaufslistenEintragRepository;
+        this.vorratService = vorratService;
     }
 
     @Transactional(readOnly = true)
@@ -104,12 +108,15 @@ public class EinkaufslisteService {
 
         einkaufslistenEintragRepository.deleteAllInBatch();
 
-        List<EinkaufslistenEintrag> neueEintraege = gruppiert.values().stream()
-                .map(agg -> new EinkaufslistenEintrag(
-                        agg.anzeigeName,
-                        agg.formatiereMenge(),
-                        agg.anzahlVerwendungen,
-                        false
+        // US-09: Vorratsmengen laden und mit den benötigten Mengen quasi "verrechnen".
+        // Für eine getrennte Speicherung von Gesamtmenge, Vorrat und Restmenge bräuchte man
+        // eigene Felder/DB-Spalten – hier wird die im Vorrat vorhandene Zutatmenge als einfacher Text in die EInkaufsliste geschrieben.
+        Map<String, String> vorratMengen = vorratService.holeVorratMengenLowercase();
+
+        List<EinkaufslistenEintrag> neueEintraege = gruppiert.entrySet().stream()
+                .map(entry -> baueEinkaufslistenEintrag(
+                        entry.getValue(),
+                        vorratMengen.get(entry.getKey())
                 ))
                 .toList();
 
@@ -119,6 +126,76 @@ public class EinkaufslisteService {
                 .toList();
     }
 
+    private EinkaufslistenEintrag baueEinkaufslistenEintrag(AggregierteZutat agg, String vorratMengeRoh) {
+        String basisMenge = agg.formatiereMenge();
+
+        // Zutat ist gar nicht im Vorrat vorhanden
+        if (vorratMengeRoh == null) {
+            return new EinkaufslistenEintrag(
+                    agg.anzeigeName,
+                    basisMenge,
+                    agg.anzahlVerwendungen,
+                    false
+            );
+        }
+
+        String vorratInfo = vorratMengeRoh.isBlank() ? "im Vorrat" : vorratMengeRoh + " im Vorrat";
+
+        // Fall 1: Eindeutige numerische Einheit vorhanden -> Restmenge berechnen
+        if (agg.hatEindeutigeNumerischeEinheit()) {
+            String einheitKey = agg.einzigeEinheitKey();
+            String einheitLabel = agg.originalEinheit.getOrDefault(einheitKey, "");
+            double benoetigt = agg.summenNachEinheit.get(einheitKey);
+
+            Double vorratZahl = parseMengeWert(vorratMengeRoh);
+            Matcher vorratMatcher = MENGE_MIT_BRUCH_MUSTER.matcher(vorratMengeRoh);
+            String vorratEinheitKey = vorratMatcher.matches()
+                    ? vorratMatcher.group(6).trim().toLowerCase(Locale.ROOT)
+                    : "";
+
+            if (vorratZahl != null && vorratEinheitKey.equals(einheitKey)) {
+                double rest = benoetigt - vorratZahl;
+
+                // Komplett durch den Vorrat abgedeckt -> als erledigt/vorhanden markieren
+                if (rest <= 0.0001) {
+                    String mengeText = basisMenge.isBlank()
+                            ? "Bereits im Vorrat (" + vorratInfo + ")"
+                            : "0 " + einheitLabel + " (benötigt: " + basisMenge + ", " + vorratInfo + ")";
+                    return new EinkaufslistenEintrag(
+                            agg.anzeigeName,
+                            mengeText.trim(),
+                            agg.anzahlVerwendungen,
+                            true
+                    );
+                }
+
+                // Teilmenge vorhanden -> Restmenge anzeigen
+                String restStr = formatiereZahl(rest);
+                String restMitEinheit = einheitLabel.isEmpty() ? restStr : restStr + " " + einheitLabel;
+                String mengeText = restMitEinheit + " (" + vorratInfo + ")";
+                return new EinkaufslistenEintrag(
+                        agg.anzeigeName,
+                        mengeText,
+                        agg.anzahlVerwendungen,
+                        false
+                );
+            }
+        }
+
+        // Fall 2: Vorrat vorhanden, aber Einheiten unterschiedlich oder ohne Zahl -> als Hinweis mitgeben
+        String mengeText = basisMenge.isBlank()
+                ? "Bereits im Vorrat (" + vorratInfo + ")"
+                : basisMenge + " (" + vorratInfo + ")";
+
+        return new EinkaufslistenEintrag(
+                agg.anzeigeName,
+                mengeText,
+                agg.anzahlVerwendungen,
+                false
+        );
+    }
+
+    // ------------------------------------------------------------------------//
     private static String kapitalisiereErstenBuchstaben(String text) {
         if (text == null || text.isEmpty()) {
             return text;
@@ -136,6 +213,49 @@ public class EinkaufslisteService {
         );
     }
 
+    private static String formatiereZahl(double wert) {
+        double gerundetAufZehntel = Math.round(wert * 10.0) / 10.0;
+        if (Math.abs(gerundetAufZehntel - Math.round(gerundetAufZehntel)) < 0.0001) {
+            return String.valueOf(Math.round(gerundetAufZehntel));
+        }
+        return String.format(Locale.GERMAN, "%.1f", gerundetAufZehntel);
+    }
+
+    private static Double parseMengeWert(String eingabe) {
+        Matcher matcher = MENGE_MIT_BRUCH_MUSTER.matcher(eingabe);
+        if (!matcher.matches()) {
+            return null;
+        }
+
+        double ganzzahl = 0.0;
+        if (matcher.group(1) != null) {
+            ganzzahl = Double.parseDouble(matcher.group(1));
+        }
+
+        if (matcher.group(2) != null && matcher.group(3) != null) {
+            double zaehler = Double.parseDouble(matcher.group(2).replace(',', '.'));
+            double nenner = Double.parseDouble(matcher.group(3).replace(',', '.'));
+            if (nenner == 0.0) {
+                return null;
+            }
+            return ganzzahl + (zaehler / nenner);
+        }
+
+        if (matcher.group(4) != null) {
+            Double bruchWert = UNICODE_BRUECHE.get(matcher.group(4).charAt(0));
+            if (bruchWert == null) {
+                return null;
+            }
+            return ganzzahl + bruchWert;
+        }
+
+        if (matcher.group(5) != null) {
+            return ganzzahl + Double.parseDouble(matcher.group(5).replace(',', '.'));
+        }
+
+        return null;
+    }
+
     private static final class AggregierteZutat {
         private final String anzeigeName;
         private int anzahlVerwendungen = 0;
@@ -143,11 +263,30 @@ public class EinkaufslisteService {
         private final Map<String, String> originalEinheit = new LinkedHashMap<>();
         private final List<String> sonstigeMengen = new ArrayList<>();
 
+        // Im Wochenplan kann dieselbe Zutat an verschiedenen Tagen,
+        // in verschiedenen Rezepten oder mit mehreren Portionen vorkommen.
+        // Ein AggregierteZutat-Objekt sammelt pro Zutat (schluessel in Kleinbuchstaben) alle Vorkommen ein.
         private AggregierteZutat(String anzeigeName) {
             this.anzeigeName = anzeigeName;
         }
 
+        // Prüft, ob die Zutat nur eine einzige numerische Einheit
+        // (z. B. nur "g") und keine sonstigen Mengenangaben hat.
+        private boolean hatEindeutigeNumerischeEinheit() {
+            return sonstigeMengen.isEmpty() && summenNachEinheit.size() == 1;
+        }
+
+        // Liefert den kleingeschriebenen Einheitenschlüssel
+        // (z. B. "g") dieser einzigen numerischen Einheit.
+        private String einzigeEinheitKey() {
+            return summenNachEinheit.keySet().iterator().next();
+        }
+
+        // Fügt eine rohe Mengenangabe (mit Portionsfaktor) zur aggregierten Zutat hinzu:
+        // zählt die Verwendungen hoch und summiert numerische Mengen nach Einheit
+        // oder merkt nicht-numerische Angaben unter sonstigeMengen vor.
         private void fuegeMengeHinzu(String mengeRoh, int faktor) {
+            // Mindestens Faktor 1 ansetzen und die Gesamtzahl der Verwendungen erhöhen
             int wirksamerFaktor = Math.max(1, faktor);
             this.anzahlVerwendungen += wirksamerFaktor;
 
@@ -160,52 +299,20 @@ public class EinkaufslisteService {
             Matcher matcher = MENGE_MIT_BRUCH_MUSTER.matcher(getrimmt);
 
             if (parsedWert != null && matcher.matches()) {
+                // Mit Portionen multiplizieren und nach kleingeschriebener Einheit aufsummieren
                 double zahl = parsedWert * wirksamerFaktor;
                 String einheit = matcher.group(6).trim();
                 String einheitKey = einheit.toLowerCase(Locale.ROOT);
 
                 summenNachEinheit.merge(einheitKey, zahl, Double::sum);
+                // Erste Schreibweise der Einheit (z. B. "g" oder "EL") für die Anzeige merken
                 originalEinheit.putIfAbsent(einheitKey, einheit);
             } else {
+                // Fallback für unparsebare/textliche Mengen (z. B. "nach Geschmack" oder "1 Prise")
                 for (int i = 0; i < wirksamerFaktor; i++) {
                     sonstigeMengen.add(getrimmt);
                 }
             }
-        }
-
-        private static Double parseMengeWert(String eingabe) {
-            Matcher matcher = MENGE_MIT_BRUCH_MUSTER.matcher(eingabe);
-            if (!matcher.matches()) {
-                return null;
-            }
-
-            double ganzzahl = 0.0;
-            if (matcher.group(1) != null) {
-                ganzzahl = Double.parseDouble(matcher.group(1));
-            }
-
-            if (matcher.group(2) != null && matcher.group(3) != null) {
-                double zaehler = Double.parseDouble(matcher.group(2).replace(',', '.'));
-                double nenner = Double.parseDouble(matcher.group(3).replace(',', '.'));
-                if (nenner == 0.0) {
-                    return null;
-                }
-                return ganzzahl + (zaehler / nenner);
-            }
-
-            if (matcher.group(4) != null) {
-                Double bruchWert = UNICODE_BRUECHE.get(matcher.group(4).charAt(0));
-                if (bruchWert == null) {
-                    return null;
-                }
-                return ganzzahl + bruchWert;
-            }
-
-            if (matcher.group(5) != null) {
-                return ganzzahl + Double.parseDouble(matcher.group(5).replace(',', '.'));
-            }
-
-            return null;
         }
 
         private String formatiereMenge() {
@@ -221,14 +328,6 @@ public class EinkaufslisteService {
 
             teile.addAll(sonstigeMengen);
             return String.join(" + ", teile);
-        }
-
-        private static String formatiereZahl(double wert) {
-            double gerundetAufZehntel = Math.round(wert * 10.0) / 10.0;
-            if (Math.abs(gerundetAufZehntel - Math.round(gerundetAufZehntel)) < 0.0001) {
-                return String.valueOf(Math.round(gerundetAufZehntel));
-            }
-            return String.format(Locale.GERMAN, "%.1f", gerundetAufZehntel);
         }
     }
 

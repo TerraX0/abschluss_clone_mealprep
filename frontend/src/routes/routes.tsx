@@ -7,6 +7,8 @@ import MeineRezepte from "../components/MeineRezepte.tsx";
 import EigenesRezeptFormular from "../components/EigenesRezeptFormular.tsx";
 import Wochenplan from "../components/Wochenplan.tsx";
 import Einkaufsliste from "../components/Einkaufsliste.tsx";
+// Für US9
+import Vorratsschrank from "../components/Vorratsschrank.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -31,13 +33,9 @@ export const router = createBrowserRouter([
                 element: <RezeptDetailansicht/>,
             },
             {
-                path: "vorrat",
-                element: (
-                    <section className="placeholder-panel">
-                        <h2>Vorratsschrank</h2>
-                        <p>Verwaltung vorhandener Vorräte (US-09).</p>
-                    </section>
-                ),
+                //Für US-9
+                path: "/vorrat",
+                element: <Vorratsschrank/>,
             },
             {
                 path: "wochenplan",

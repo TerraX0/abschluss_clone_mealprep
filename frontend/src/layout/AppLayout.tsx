@@ -33,6 +33,13 @@ export const NAV_ITEMS: NavItem[] = [
         hint: "Neu anlegen",
         imageUrl: "/images/17.jpg",
     },
+    // Für US9
+    {
+        path: "/vorrat",
+        label: "Vorratsschrank",
+        hint: "Vorräte pflegen",
+        imageUrl: "/images/22.jpg",
+    },
     {
         path: "/wochenplan",
         label: "Wochenplan",
